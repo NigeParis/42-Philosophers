@@ -17,7 +17,7 @@ SRCS=$(addprefix $(SRC_DIR), $(SRC))
 OBJ=$(SRC:.c=.o)
 OBJS=$(addprefix $(OBJ_DIR), $(OBJ))
 
-INCLUDE= -I ./include/
+INCLUDE= -I ./include/ -lpthread
 
 ###############################################################################
 ## RULES
