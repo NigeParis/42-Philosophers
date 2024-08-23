@@ -6,8 +6,14 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/08/23 10:19:59 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:20:09 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <stdio.h>
+
+#endif
