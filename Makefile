@@ -3,7 +3,7 @@
 
 NAME= philo
 CFLAGS= -Wall -Wextra -Werror -g3
-CC=gcc
+CC=cc
 
 ###############################################################################
 ## SOURCES 
@@ -18,7 +18,7 @@ SRCS=$(addprefix $(SRC_DIR), $(SRC))
 OBJ=$(SRC:.c=.o)
 OBJS=$(addprefix $(OBJ_DIR), $(OBJ))
 
-INCLUDE= -I ./include/ -lpthread
+INCLUDE= -I ./include/ 
 
 ###############################################################################
 ## RULES
@@ -30,7 +30,6 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@echo "COMPILE all c files to .o FILES .......\n"
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE)
 

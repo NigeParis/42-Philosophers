@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/03 12:58:35 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:48:18 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,16 @@
 # define MAX_PHILO 200
 # define MIN_TIME 60
 
-typedef struct input_params
+typedef struct s_life_of_philo
+{
+	int id;
+	int is_full;
+
+
+	
+}	t_current_philo;
+
+typedef struct s_input_params
 {
 	int 	nbr_philo;
 	int		nbr_forks;
@@ -35,8 +44,11 @@ typedef struct input_params
 	int		status;
 	long	start_time_sec;
 	long	start_time_usec;
+	pthread_mutex_t lock; 
 	
-} input_args;
+} t_input_args;
+
+
 
 
 /// @brief function ft_atoi modified
@@ -48,7 +60,7 @@ int		ft_atoi(char *str);
 /// @brief initalise to zero all int in the stucture
 /// @brief checks if args exists
 /// @param args 
-void	ft_init_args(input_args *args);
+void	ft_init_args(t_input_args *args);
 
 void	ft_putstr_fd(char *str, int fd);
 void	error_args(char *str);
@@ -67,7 +79,7 @@ int	is_no_meal(int meal);
 /// @param argc 
 /// @param argv 
 /// @return SUCCESS or FAILURE
-int		parse_args(input_args *args, int argc, char *argv[]);
+int		parse_args(t_input_args *args, int argc, char *argv[]);
 
 
 #endif
