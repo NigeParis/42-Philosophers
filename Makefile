@@ -11,7 +11,8 @@ CC=gcc
 SRC_DIR=src/
 OBJ_DIR=build/
 
-SRC= main.c utils.c setup.c error.c
+SRC= main.c utils_atoi.c utils_parse.c utils_philo.c
+SRC+= setup.c error.c
 
 SRCS=$(addprefix $(SRC_DIR), $(SRC))
 OBJ=$(SRC:.c=.o)

@@ -6,20 +6,22 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/08/29 16:29:49 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:38:56 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
 void thread_1(void *arg)
 {
-    (void)arg;
+    input_args *thread_data;
 
-    printf("inside thread_1\n");
-    pthread_exit(EXIT_SUCCESS);
-    
+    thread_data = (input_args*)arg;
+
+    usleep(thread_data ->time_to_sleep * 1000);
+    printf("inside thread_1 %d\n", thread_data->time_to_sleep);
+    thread_data ->status = 1;
+    pthread_exit(EXIT_SUCCESS);    
 }
 
 
@@ -30,15 +32,21 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
     input_args args;
+    struct timeval current_time;
 
-    if (argc < 5 || argc > 6)
-        return (error_args("Error - number of arguments\n"), EXIT_FAILURE);
+    if (is_number_of_args(argc))
+        return (EXIT_FAILURE);
+
+    
     ft_init_args(&args);
     if (parse_args(&args, argc,  argv))
-        return (error_args("Error - arguments format\n"), EXIT_FAILURE);
+        return (EXIT_FAILURE);
+    gettimeofday(&current_time, NULL);
+    args.start_time_sec = current_time.tv_sec;
+    args.start_time_usec = current_time.tv_usec;
     
+    printf("time : sec: '%lu' milli:'%lu'\n", args.start_time_sec, current_time.tv_usec);
 
-   
     printf("args forks = %d \n", args.nbr_forks);
     printf("args philo = %d \n", args.nbr_philo);
     printf("args die = %d \n", args.time_to_die);
@@ -46,13 +54,23 @@ int main(int argc, char *argv[])
     printf("args sleep = %d \n", args.time_to_sleep);
     printf("args repas = %d \n", args.nbr_repas);
 
+    
 
+    pthread_t thread1;
 
-    // pthread_t thread1;
+    pthread_create(&thread1, NULL, (void *)thread_1, (void*)&args);
 
-    // pthread_create(&thread1, NULL, (void *)thread_1, NULL);
-    // pthread_detach(thread1);
-    // printf("after thread\n");
+    while(1)
+    {
+        if(args.status > 0)
+            break;
+    }
+
+    args.status = 1;
+    pthread_join(thread1, NULL);
+    printf("after thread\n");
+    gettimeofday(&current_time, NULL);
+    printf("time : sec: '%lu' milli:'%lu'\n", (current_time.tv_sec - args.start_time_sec), (current_time.tv_usec - args.start_time_usec));
 
     return (EXIT_SUCCESS);
 }

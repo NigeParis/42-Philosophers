@@ -1,30 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   utils_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/29 15:17:05 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/03 09:19:52 by nrobinso         ###   ########.fr       */
+/*   Created: 2024/09/03 09:57:45 by nrobinso          #+#    #+#             */
+/*   Updated: 2024/09/03 10:59:05 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_args(char *str)
+int is_too_many_philo(int philo)
 {
-	ft_putstr_fd(str, STDERR_FILENO);	
+    if (philo > MAX_PHILO)
+        return (EXIT_FAILURE);
+    return (EXIT_SUCCESS);
 }
 
-int	is_number_of_args(int argc)
+int is_not_enough_time(int time)
 {
-	if (argc < 5 || argc > 6)
-	{
-        error_args("Error - number of arguments\n");
-        error_args("./philo [philosophers] [die] [eat] [sleep] ([meals] optional)\n");
+    if (time < MIN_TIME)
         return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-	
+    return (EXIT_SUCCESS);   
+}
+
+int is_not_number(char *arg)
+{
+    int i;
+
+    i = 0;
+    while (arg && arg[i])
+    {
+		if ((arg[i] == '-') && i == 0)
+			i++; 
+        if (!ft_isdigit(arg[i]))
+            return (EXIT_FAILURE);
+        i++;
+    }
+    return (EXIT_SUCCESS);
 }

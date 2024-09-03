@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_atoi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:15:32 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/08/29 16:22:06 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:37:48 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static int ft_isdigit(char c)
-{
-    return (c >= '0' && c <= '9');   
-}
-
-static int ft_isspace(char c)
-{
-    if (c == ' ' || c == '\t')
-        return (1);
-    return (0);
-}
 
 static int check_sign(char *str, int *i, int *neg_flag)
 {
@@ -69,20 +57,4 @@ int    ft_atoi(char *str)
 	if (nbr > INT_MAX)
 		return (-1);
     return ((int)(nbr * neg_flag));
-}
-
-void	ft_putstr_fd(char *str, int fd)
-{
-	int		i;
-	char	c;
-
-	i = 0;
-	if (!str)
-		return ;
-	while (str && str[i])
-	{
-		c = str[i];
-		write(fd, &c, 1);
-		i++;
-	}
 }
