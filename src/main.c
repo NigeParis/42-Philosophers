@@ -6,20 +6,21 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/03 15:16:49 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 09:15:03 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void thread(void *arg)
+void *thread(void *arg)
 {
     t_input_args *thread_data;
     thread_data = (t_input_args*)arg;
     pthread_mutex_lock(&thread_data->lock); 
 
     usleep(thread_data ->time_to_sleep * 1000);
-    printf("inside thread_1 %d\n", thread_data->time_to_sleep);
+    printf("inside thread_id %d\n", thread_data->philo[0].id);
+    printf("inside thread_id %d\n", thread_data->philo[1].id);
     thread_data ->status = 1;
     pthread_mutex_unlock(&thread_data->lock); 
     pthread_exit(EXIT_SUCCESS);    
@@ -35,6 +36,9 @@ int main(int argc, char *argv[])
     t_input_args args;
     struct timeval current_time;
 
+
+    args.philo = ft_calloc(sizeof(pthread_t) , 2);
+
     if (is_number_of_args(argc))
         return (EXIT_FAILURE);
 
@@ -42,28 +46,23 @@ int main(int argc, char *argv[])
     ft_init_args(&args);
     if (parse_args(&args, argc,  argv))
         return (EXIT_FAILURE);
+        
+    pthread_mutex_init(&args.lock, NULL);
+    
     gettimeofday(&current_time, NULL);
     args.start_time_sec = current_time.tv_sec;
     args.start_time_usec = current_time.tv_usec;
-    pthread_mutex_init(&args.lock, NULL);
-
 
     
-    printf("time : sec: '%lu' milli:'%lu'\n", args.start_time_sec, current_time.tv_usec);
+    pthread_create(&args.philo[0].thread, NULL, thread, &args);
+    pthread_create(&args.philo[1].thread, NULL, thread, &args);
+    args.philo[0].id = 1;
+    args.philo[1].id = 2;
+    dprintf(STDERR_FILENO, "here\n");
 
-    printf("args forks = %d \n", args.nbr_forks);
-    printf("args philo = %d \n", args.nbr_philo);
-    printf("args die = %d \n", args.time_to_die);
-    printf("args eat = %d \n", args.time_to_eat);
-    printf("args sleep = %d \n", args.time_to_sleep);
-    printf("args repas = %d \n", args.nbr_repas);
-
-    
-
-    pthread_t thread1;
     long time;
 
-    pthread_create(&thread1, NULL, (void *)thread, (void*)&args);
+    print_input(args, current_time);     // todo debug delete 
 
     while(1)
     {
@@ -72,7 +71,8 @@ int main(int argc, char *argv[])
     }
 
     args.status = 1;
-    pthread_join(thread1, NULL);
+    pthread_join(args.philo[0].thread, NULL);
+    pthread_join(args.philo[1].thread, NULL);
     printf("after thread\n");
     
     gettimeofday(&current_time, NULL);

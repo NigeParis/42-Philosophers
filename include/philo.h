@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/03 14:48:18 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 08:58:47 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <pthread.h>
 # include <limits.h>
 # include <sys/time.h>
+# include <stdint.h>
+
 
 # define MAX_PHILO 200
 # define MIN_TIME 60
@@ -29,12 +31,15 @@ typedef struct s_life_of_philo
 	int id;
 	int is_full;
 
+	pthread_t thread;
 
-	
+
+	struct t_input_args *args;
 }	t_current_philo;
 
-typedef struct s_input_params
+typedef struct s_input_args
 {
+	int		id;
 	int 	nbr_philo;
 	int		nbr_forks;
 	int		time_to_die;
@@ -44,7 +49,8 @@ typedef struct s_input_params
 	int		status;
 	long	start_time_sec;
 	long	start_time_usec;
-	pthread_mutex_t lock; 
+	pthread_mutex_t lock;
+	t_current_philo	*philo;
 	
 } t_input_args;
 
@@ -80,6 +86,12 @@ int	is_no_meal(int meal);
 /// @param argv 
 /// @return SUCCESS or FAILURE
 int		parse_args(t_input_args *args, int argc, char *argv[]);
+
+void	print_input(t_input_args args, struct timeval current_time);
+long    time_diff(t_input_args args, struct timeval current_time);
+
+void    *ft_calloc(size_t nb_elements , size_t size);
+void    ft_bzero(void *ptr, size_t total_size);
 
 
 #endif

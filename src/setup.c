@@ -6,16 +6,17 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/03 12:58:57 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:36:42 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    ft_init_args(input_args *args)
+void    ft_init_args(t_input_args *args)
 {
 	if (!args)
 		return ;
+    args->id = 0;
     args->nbr_philo = 0;
     args->nbr_forks = 0;
     args->time_to_die = 0;
@@ -27,7 +28,7 @@ void    ft_init_args(input_args *args)
     args->start_time_usec = 0; 
 }
 
-int parse_args(input_args *args, int argc, char *argv[])
+int parse_args(t_input_args *args, int argc, char *argv[])
 {
     if (is_negative_number(argv))
         return (EXIT_FAILURE);
