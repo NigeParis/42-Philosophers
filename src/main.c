@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 18:02:21 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:28:29 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@
 void *thread(void *p)
 {
     struct timeval current_time;
-
     t_current_philo *philo;
     t_input_args *args;
-   // static unsigned long total;
 
     philo = (t_current_philo *)p;
     args = philo->args;
@@ -31,8 +29,11 @@ void *thread(void *p)
     philo->start_time = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
     usleep(args->time_to_sleep * 1000);
     
-    args->status++;
-    printf( "Thread #%d -> %lu\n", philo->id - 1, (philo->start_time - args->start_thread) + args->time_to_sleep);
+    args->status = 1;
+    printf( "%lu ms philo[%d]\n", ((philo->start_time - args->start_thread) + args->time_to_sleep), philo->id);
+  
+  
+  
     pthread_mutex_unlock(&args->lock);
     pthread_exit(EXIT_SUCCESS);    
 }
@@ -48,12 +49,10 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
     int i;
-    long time;
     t_input_args args;
     struct timeval current_time;
 
     i = 0;
-    time = 0;
 
     if (is_number_of_args(argc))
         return (EXIT_FAILURE);
@@ -78,7 +77,8 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-        if(args.status >= args.nbr_philo){
+        if(args.status == 1)
+        {
             break;
         }            
     }
@@ -86,7 +86,6 @@ int main(int argc, char *argv[])
     args.status = 1;
 
     i = 0;
-    time = 0;
 
     while (i < args.nbr_philo)
     {
@@ -95,14 +94,6 @@ int main(int argc, char *argv[])
     }
 
     i = 0;
-
-    while (i < args.nbr_philo)
-    {
-        time = time_diff(&args, current_time, i);    
-        printf("time id [%d] : usec:'%lu' '%lu'\n", args.philo[i].id, time, args.philo[i].start_time);
-        i++;
-    }
-
 
 
 
