@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/04 13:03:40 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:08:15 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int is_negative_number(char *argv[])
     {
         if (is_not_number(argv[i]))
             return (error_args("Error - numbers only\n"), EXIT_FAILURE);
-        if (ft_atoi(argv[i]) < 0)
+        if (ft_atoi(argv[i]) < 1)
 		{
-            error_args("Error - args less than zero or greater than INT_MAX\n");
+            error_args("Error - args less than 1 or greater than INT_MAX\n");
             return (EXIT_FAILURE);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 08:58:47 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:53:02 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,21 @@
 # define MAX_PHILO 200
 # define MIN_TIME 60
 
+struct s_input_args; // Forward declaration
+
+typedef struct s_input_args t_input_args;
+
+
 typedef struct s_life_of_philo
 {
 	int id;
 	int is_full;
+	long	start_time;
 
 	pthread_t thread;
 
 
-	struct t_input_args *args;
+	t_input_args *args;
 }	t_current_philo;
 
 typedef struct s_input_args
@@ -47,10 +53,11 @@ typedef struct s_input_args
 	int		time_to_sleep;
 	int		nbr_repas;
 	int		status;
-	long	start_time_sec;
-	long	start_time_usec;
+	long	start_thread;
+
 	pthread_mutex_t lock;
-	t_current_philo	*philo;
+	t_current_philo	philo[200];
+	//t_current_philo	*philo;
 	
 } t_input_args;
 
@@ -88,10 +95,11 @@ int	is_no_meal(int meal);
 int		parse_args(t_input_args *args, int argc, char *argv[]);
 
 void	print_input(t_input_args args, struct timeval current_time);
-long    time_diff(t_input_args args, struct timeval current_time);
+long    time_diff(t_input_args *args, struct timeval current_time, int i);
+long	total_time(t_input_args *args, struct timeval *current_time);
+
 
 void    *ft_calloc(size_t nb_elements , size_t size);
-void    ft_bzero(void *ptr, size_t total_size);
 
 
 #endif

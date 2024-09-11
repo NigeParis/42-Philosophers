@@ -6,25 +6,39 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 09:15:03 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:02:21 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void *thread(void *arg)
-{
-    t_input_args *thread_data;
-    thread_data = (t_input_args*)arg;
-    pthread_mutex_lock(&thread_data->lock); 
+#include "philo.h"
 
-    usleep(thread_data ->time_to_sleep * 1000);
-    printf("inside thread_id %d\n", thread_data->philo[0].id);
-    printf("inside thread_id %d\n", thread_data->philo[1].id);
-    thread_data ->status = 1;
-    pthread_mutex_unlock(&thread_data->lock); 
+void *thread(void *p)
+{
+    struct timeval current_time;
+
+    t_current_philo *philo;
+    t_input_args *args;
+   // static unsigned long total;
+
+    philo = (t_current_philo *)p;
+    args = philo->args;
+    
+    pthread_mutex_lock(&args->lock); 
+
+    gettimeofday(&current_time, NULL);
+    philo->start_time = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
+    usleep(args->time_to_sleep * 1000);
+    
+    args->status++;
+    printf( "Thread #%d -> %lu\n", philo->id - 1, (philo->start_time - args->start_thread) + args->time_to_sleep);
+    pthread_mutex_unlock(&args->lock);
     pthread_exit(EXIT_SUCCESS);    
 }
+
+
+
 
 
 
@@ -33,55 +47,70 @@ int main(int argc, char *argv[])
 {
     (void)argc;
     (void)argv;
+    int i;
+    long time;
     t_input_args args;
     struct timeval current_time;
 
-
-    args.philo = ft_calloc(sizeof(pthread_t) , 2);
+    i = 0;
+    time = 0;
 
     if (is_number_of_args(argc))
         return (EXIT_FAILURE);
-
     
     ft_init_args(&args);
-    if (parse_args(&args, argc,  argv))
+    if (parse_args(&args, argc, argv))
         return (EXIT_FAILURE);
-        
-    pthread_mutex_init(&args.lock, NULL);
-    
+
     gettimeofday(&current_time, NULL);
-    args.start_time_sec = current_time.tv_sec;
-    args.start_time_usec = current_time.tv_usec;
+    args.start_thread = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
+       
+    pthread_mutex_init(&args.lock, NULL);
 
-    
-    pthread_create(&args.philo[0].thread, NULL, thread, &args);
-    pthread_create(&args.philo[1].thread, NULL, thread, &args);
-    args.philo[0].id = 1;
-    args.philo[1].id = 2;
-    dprintf(STDERR_FILENO, "here\n");
-
-    long time;
-
-    print_input(args, current_time);     // todo debug delete 
+    i = 0;
+    while (i < args.nbr_philo)
+    {
+        args.philo[i].id = i + 1;
+        args.philo[i].args = &args;
+        pthread_create(&args.philo[i].thread, NULL, &thread, &args.philo[i]);
+        i++;
+    }
 
     while(1)
     {
-        if(args.status > 0)
+        if(args.status >= args.nbr_philo){
             break;
+        }            
     }
 
     args.status = 1;
-    pthread_join(args.philo[0].thread, NULL);
-    pthread_join(args.philo[1].thread, NULL);
-    printf("after thread\n");
-    
-    gettimeofday(&current_time, NULL);
-    time = (((current_time.tv_sec * 1000) - (args.start_time_sec * 1000)) + ((current_time.tv_usec - args.start_time_usec) / 1000));
-    
-    
-    
-    
-    printf("time : sec: '%lu'\n", time);
 
+    i = 0;
+    time = 0;
+
+    while (i < args.nbr_philo)
+    {
+        pthread_join(args.philo[i].thread, NULL);
+        i++;
+    }
+
+    i = 0;
+
+    while (i < args.nbr_philo)
+    {
+        time = time_diff(&args, current_time, i);    
+        printf("time id [%d] : usec:'%lu' '%lu'\n", args.philo[i].id, time, args.philo[i].start_time);
+        i++;
+    }
+
+
+
+
+
+
+
+
+    printf("end threads\n");
+    printf("total_time : usec: '%lu'\n", total_time(&args, &current_time));
     return (EXIT_SUCCESS);
 }

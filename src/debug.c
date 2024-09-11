@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:36:53 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/04 11:41:14 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/11 09:47:00 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	print_input(t_input_args args, struct timeval current_time)
 {
-	
+	(void)current_time;
     
-    printf("time : sec: '%lu' milli:'%lu'\n", args.start_time_sec, current_time.tv_usec);
 
     printf("args forks = %d \n", args.nbr_forks);
     printf("args philo = %d \n", args.nbr_philo);
