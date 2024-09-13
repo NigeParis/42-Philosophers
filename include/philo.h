@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 09:32:10 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:49:35 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_input_args t_input_args;
 typedef struct s_life_of_philo
 {
 	int id;
+	int	nbr_meals;
 	int is_full;
 	long	start_time;
 

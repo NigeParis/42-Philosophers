@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 09:52:33 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:04:03 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,19 @@
 
 void    philo_sleeping(t_current_philo *philo)
 {
-    usleep(philo->args->time_to_sleep * 1000);    
     put_log(philo, "is sleeping");
+    usleep(philo->args->time_to_sleep * 1000);    
 }
 
+void    philo_eating(t_current_philo *philo)
+{
+    pthread_mutex_lock(&philo->args->lock); 
+    philo->nbr_meals++;
+    put_log(philo, "is eating");
+    usleep(philo->args->time_to_eat * 1000);    
+    pthread_mutex_unlock(&philo->args->lock); 
 
+}
 
 void *thread(void *thread_philo)
 {
@@ -34,32 +42,28 @@ void *thread(void *thread_philo)
     //pthread_mutex_lock(&args->lock); 
 
     philo->start_time = get_timestamp(&current_time);
-    args->status = 0;
-
-
-    philo_sleeping(philo);
    
+    while (philo->nbr_meals != 5)
+    {
+        philo_eating(philo);
+        philo_sleeping(philo);
+        put_log(philo, "is thinking");
+        
+    }
     while (1)
     {
+
         if (args->status == 1)
             break ;
+        if (philo->nbr_meals == 5)
+            args->status = 1;
+
 
     }  
   
-
-
-
-
-
     //pthread_mutex_unlock(&args->lock);
     pthread_exit(EXIT_SUCCESS);    
 }
-
-
-
-
-
-
 
 int main(int argc, char *argv[])
 {
