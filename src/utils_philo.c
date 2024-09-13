@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 13:08:15 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:31:52 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,19 @@ void    *ft_calloc(size_t nb_elements , size_t size)
         c[i++] = 0;
     return (ptr);
 }
+
+
+
+void    put_log(t_current_philo *philo, char *str)
+{
+    struct timeval current_time;
+
+    pthread_mutex_lock(&philo->args->log); 
+    
+    printf("%lu ms philo[%d] %s\n", \
+    (get_timestamp(&current_time) - philo->args->start_thread), philo->id, str);
+    pthread_mutex_unlock(&philo->args->log); 
+    
+}
+
 

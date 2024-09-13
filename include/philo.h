@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 17:53:02 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:32:10 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef struct s_input_args
 	long	start_thread;
 
 	pthread_mutex_t lock;
-	t_current_philo	philo[200];
+	pthread_mutex_t log;
+	t_current_philo	philo[MAX_PHILO];
 	//t_current_philo	*philo;
 	
 } t_input_args;
@@ -95,8 +96,10 @@ int	is_no_meal(int meal);
 int		parse_args(t_input_args *args, int argc, char *argv[]);
 
 void	print_input(t_input_args args, struct timeval current_time);
+void    put_log(t_current_philo *philo, char *str);
 long    time_diff(t_input_args *args, struct timeval current_time, int i);
 long	total_time(t_input_args *args, struct timeval *current_time);
+long    get_timestamp(struct timeval *current_time);
 
 
 void    *ft_calloc(size_t nb_elements , size_t size);

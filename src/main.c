@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 18:28:29 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:52:33 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,44 @@
 
 #include "philo.h"
 
-void *thread(void *p)
+
+void    philo_sleeping(t_current_philo *philo)
+{
+    usleep(philo->args->time_to_sleep * 1000);    
+    put_log(philo, "is sleeping");
+}
+
+
+
+void *thread(void *thread_philo)
 {
     struct timeval current_time;
     t_current_philo *philo;
     t_input_args *args;
 
-    philo = (t_current_philo *)p;
+    philo = (t_current_philo *)thread_philo;
     args = philo->args;
-    
-    pthread_mutex_lock(&args->lock); 
+    //pthread_mutex_lock(&args->lock); 
 
-    gettimeofday(&current_time, NULL);
-    philo->start_time = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
-    usleep(args->time_to_sleep * 1000);
-    
-    args->status = 1;
-    printf( "%lu ms philo[%d]\n", ((philo->start_time - args->start_thread) + args->time_to_sleep), philo->id);
+    philo->start_time = get_timestamp(&current_time);
+    args->status = 0;
+
+
+    philo_sleeping(philo);
+   
+    while (1)
+    {
+        if (args->status == 1)
+            break ;
+
+    }  
   
-  
-  
-    pthread_mutex_unlock(&args->lock);
+
+
+
+
+
+    //pthread_mutex_unlock(&args->lock);
     pthread_exit(EXIT_SUCCESS);    
 }
 
@@ -46,8 +63,6 @@ void *thread(void *p)
 
 int main(int argc, char *argv[])
 {
-    (void)argc;
-    (void)argv;
     int i;
     t_input_args args;
     struct timeval current_time;
@@ -61,8 +76,7 @@ int main(int argc, char *argv[])
     if (parse_args(&args, argc, argv))
         return (EXIT_FAILURE);
 
-    gettimeofday(&current_time, NULL);
-    args.start_thread = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
+    args.start_thread = get_timestamp(&current_time);
        
     pthread_mutex_init(&args.lock, NULL);
 
