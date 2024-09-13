@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 14:04:03 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:16:18 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ void    philo_sleeping(t_current_philo *philo)
 void    philo_eating(t_current_philo *philo)
 {
     pthread_mutex_lock(&philo->args->lock); 
-    philo->nbr_meals++;
+    if (philo->nbr_meals < philo->args->nbr_repas)
+        philo->args->status = 1;
     put_log(philo, "is eating");
+    philo->nbr_meals++;
     usleep(philo->args->time_to_eat * 1000);    
     pthread_mutex_unlock(&philo->args->lock); 
 
@@ -43,7 +45,7 @@ void *thread(void *thread_philo)
 
     philo->start_time = get_timestamp(&current_time);
    
-    while (philo->nbr_meals != 5)
+    while (philo->nbr_meals < philo->args->nbr_repas)
     {
         philo_eating(philo);
         philo_sleeping(philo);
@@ -55,7 +57,7 @@ void *thread(void *thread_philo)
 
         if (args->status == 1)
             break ;
-        if (philo->nbr_meals == 5)
+        if (philo->nbr_meals  < philo->args->nbr_repas)
             args->status = 1;
 
 
