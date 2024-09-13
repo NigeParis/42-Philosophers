@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 16:53:41 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:11:32 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void *thread(void *thread_philo)
 
     philo = (t_current_philo *)thread_philo;
     args = philo->args;
-    //pthread_mutex_lock(&args->lock); 
 
     philo->start_time = get_timestamp(&current_time);
    
@@ -52,22 +51,8 @@ void *thread(void *thread_philo)
         put_log(philo, "is thinking");
         
     }
-    while (1)
-    {
 
-        if (args->status == 1)
-            break ;
-        if (philo->nbr_meals  < philo->args->nbr_repas)
-        {
-            pthread_mutex_lock(&args->lock_status);
-            args->status = 1;
-            pthread_mutex_unlock(&args->lock_status);
-        }
-
-    }  
-  
-    //pthread_mutex_unlock(&args->lock);
-    pthread_exit(EXIT_SUCCESS);    
+    return (0);    
 }
 
 int main(int argc, char *argv[])
@@ -98,17 +83,6 @@ int main(int argc, char *argv[])
         i++;
     }
 
-    // while(1)
-    // {
-        
-    //     if(args.status == 1)
-    //     {            
-    //         break;
-    //     }            
-        
-    // }
-
-    //args.status = 1;
 
     i = 0;
 
