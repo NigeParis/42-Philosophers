@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 15:16:18 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:53:41 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,11 @@ void *thread(void *thread_philo)
         if (args->status == 1)
             break ;
         if (philo->nbr_meals  < philo->args->nbr_repas)
+        {
+            pthread_mutex_lock(&args->lock_status);
             args->status = 1;
-
+            pthread_mutex_unlock(&args->lock_status);
+        }
 
     }  
   
@@ -95,15 +98,17 @@ int main(int argc, char *argv[])
         i++;
     }
 
-    while(1)
-    {
-        if(args.status == 1)
-        {
-            break;
-        }            
-    }
+    // while(1)
+    // {
+        
+    //     if(args.status == 1)
+    //     {            
+    //         break;
+    //     }            
+        
+    // }
 
-    args.status = 1;
+    //args.status = 1;
 
     i = 0;
 
