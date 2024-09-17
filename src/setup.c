@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/11 17:53:29 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:28:10 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void    ft_init_args(t_input_args *args)
     args->time_to_sleep = 0;
     args->nbr_repas = 0;
     args->status = 0;
+    args->stop = 0;
     args->start_thread = 0;
 }
 

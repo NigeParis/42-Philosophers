@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 10:48:56 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 10:08:32 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:00:36 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@ long    time_diff(t_input_args *args, struct timeval current_time, int i)
     return (time_diff);
 }
 
-long total_time(t_input_args *args, struct timeval *current_time)
+long total_time(t_input_args *args)
 {
-    
+    struct timeval current_time;  
     long    total_time;
     long    time;
     int i;
     
     i = 0;
-    
     total_time = 0;
+    gettimeofday(&current_time, NULL);
     while (i < args->nbr_philo)
     {
     
-        time = time_diff(args, *current_time, i);    
+        time = time_diff(args, current_time, i);    
         if (total_time < time)
             total_time = time;
         i++;

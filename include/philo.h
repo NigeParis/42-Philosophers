@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 16:41:02 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:27:52 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ typedef struct s_input_args t_input_args;
 
 typedef struct s_life_of_philo
 {
-	int id;
-	int	nbr_meals;
-	int is_full;
+	int		id;
+	int		nbr_meals;
+	int		is_full;
 	long	start_time;
+	long	last_meal;
 
 	pthread_t thread;
 
@@ -54,8 +55,10 @@ typedef struct s_input_args
 	int		time_to_sleep;
 	int		nbr_repas;
 	int		status;
+	int		stop;
 	long	start_thread;
 
+	pthread_mutex_t death;
 	pthread_mutex_t lock;
 	pthread_mutex_t lock_status;
 	pthread_mutex_t log;
@@ -87,7 +90,7 @@ int		ft_isdigit(char c);
 int		ft_isspace(char c);
 int		is_not_enough_time(int time);
 int		is_not_number(char *arg);
-int	is_no_meal(int meal);
+
 
 
 /// @brief function collects args and parses in to structure args
@@ -100,7 +103,7 @@ int		parse_args(t_input_args *args, int argc, char *argv[]);
 void	print_input(t_input_args args, struct timeval current_time);
 void    put_log(t_current_philo *philo, char *str);
 long    time_diff(t_input_args *args, struct timeval current_time, int i);
-long	total_time(t_input_args *args, struct timeval *current_time);
+long	total_time(t_input_args *args);
 long    get_timestamp(struct timeval *current_time);
 
 
