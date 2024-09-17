@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/17 11:27:52 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:55:40 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int		parse_args(t_input_args *args, int argc, char *argv[]);
 
 void	print_input(t_input_args args, struct timeval current_time);
 void    put_log(t_current_philo *philo, char *str);
+void    put_death_log(t_current_philo *philo, char *str);
 long    time_diff(t_input_args *args, struct timeval current_time, int i);
 long	total_time(t_input_args *args);
 long    get_timestamp(struct timeval *current_time);
