@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/17 11:44:58 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:40:24 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int philo_is_dead(t_current_philo *philo)
     if ((((get_timestamp(&current_time) - philo->last_meal) + philo->args->time_to_sleep) > philo->args->time_to_die))
     {
         // dprintf(STDERR_FILENO, "DIED at :'%ld'\n", (long int)((get_timestamp(&current_time) - philo->last_meal) + philo->args->time_to_sleep) - philo->args->time_to_die);
-        philo->args->stop = 1;
         
         put_log(philo, "died");
+        philo->args->stop = 1;
         pthread_mutex_unlock(&philo->args->death); 
         pthread_mutex_unlock(&philo->args->lock); 
         return (1);
@@ -139,8 +139,10 @@ int main(int argc, char *argv[])
 
 
 
-
-    printf("end threads\n");
-    printf("total_time : usec: '%lu'\n", total_time(&args));
+    if (!args.stop)
+    {
+        printf("end threads\n");
+        printf("total_time : usec: '%lu'\n", total_time(&args));
+    }
     return (EXIT_SUCCESS);
 }

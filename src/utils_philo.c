@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/13 09:31:52 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:38:17 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void    put_log(t_current_philo *philo, char *str)
 
     pthread_mutex_lock(&philo->args->log); 
     
-    printf("%lu ms philo[%d] %s\n", \
+    if (!philo->args->stop)
+        printf("%lu ms philo[%d] %s\n", \
     (get_timestamp(&current_time) - philo->args->start_thread), philo->id, str);
     pthread_mutex_unlock(&philo->args->log); 
     
