@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/17 15:55:40 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/18 09:01:22 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,14 @@ typedef struct s_input_args
 	int		status;
 	int		stop;
 	long	start_thread;
+	
 
 	pthread_mutex_t death;
 	pthread_mutex_t lock;
 	pthread_mutex_t lock_status;
 	pthread_mutex_t log;
+	pthread_mutex_t meal;
+	pthread_mutex_t fork[MAX_PHILO];
 	t_current_philo	philo[MAX_PHILO];
 	//t_current_philo	*philo;
 	
