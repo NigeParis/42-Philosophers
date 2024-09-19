@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 09:11:19 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:57:31 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_input_args
 	int		stop;
 	long	start_thread;
 	
-	pthread_t handler;
+	//pthread_t handler;
 
 	pthread_mutex_t death;
 	pthread_mutex_t lock;
@@ -109,7 +109,7 @@ void    put_log(t_current_philo *philo, char *str);
 void    put_death_log(t_current_philo *philo, char *str);
 long    time_diff(t_input_args *args, struct timeval current_time, int i);
 long	total_time(t_input_args *args);
-long    get_timestamp(struct timeval *current_time);
+long    get_timestamp();
 
 
 void    *ft_calloc(size_t nb_elements , size_t size);

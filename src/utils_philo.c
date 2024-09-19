@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 15:28:15 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:58:37 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,33 +85,21 @@ void    *ft_calloc(size_t nb_elements , size_t size)
 
 void    put_log(t_current_philo *philo, char *str)
 {
-    struct timeval current_time;
-
     pthread_mutex_lock(&philo->args->log); 
     pthread_mutex_lock(&philo->args->death); 
+
+    
     
     if ((!philo->args->stop) && (!philo->is_full))
         printf("%lu ms philo[%d] %s\n", \
-    (get_timestamp(&current_time) - philo->args->start_thread), philo->id - 1, str);
+    (get_timestamp() - philo->args->start_thread), philo->id - 1, str);
+    else if ((philo->args->stop) && (philo->args->status == 0))
+    {
+        printf("%lu ms philo[%d] %s\n", ((get_timestamp() - philo->args->start_thread)), philo->id - 1, str);
+        philo->args->status = 1;
+    }
     pthread_mutex_unlock(&philo->args->death); 
     pthread_mutex_unlock(&philo->args->log); 
     
 }
-
-
-
-void    put_death_log(t_current_philo *philo, char *str)
-{
-    struct timeval current_time;
-
-    pthread_mutex_lock(&philo->args->log); 
-    pthread_mutex_lock(&philo->args->death); 
-    
-    if (!philo->args->stop)
-        printf("%lu ms philo[%d] %s\n", ((get_timestamp(&current_time) - philo->args->start_thread) + philo->args->time_to_sleep), philo->id - 1, str);
-    pthread_mutex_unlock(&philo->args->death); 
-    pthread_mutex_unlock(&philo->args->log); 
-    
-}
-
 
