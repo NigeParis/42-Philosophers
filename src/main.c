@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 16:31:34 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:23:52 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,17 @@ int set_end_all(t_input_args *args)
     return (EXIT_SUCCESS);
 }
 
+long int    eat_time_left(t_input_args *args, int i)
+{
+    long int    result;
 
+    result = 0;
+    if (i < 0 || !args)
+        return (0);
+    result = (((args->philo[i].last_meal + args->time_to_die)\
+    - args->philo[i].last_meal) - args->time_to_eat);
+    return (result);
+} 
 
 
 
@@ -44,7 +54,7 @@ int philo_is_dead(t_input_args *args)
 
     i = 0;
     if (!args)
-        return (dprintf(STDERR_FILENO, "error pas args\n") ,EXIT_FAILURE);
+        return (printf("error pas args\n") ,EXIT_FAILURE);
     if (end_all(args))
         return (1);
     pthread_mutex_lock(&args->lock); 
@@ -54,12 +64,16 @@ int philo_is_dead(t_input_args *args)
         if (get_timestamp(&current_time) >= (args->philo[i].last_meal + args->time_to_die))
         {
             dprintf(STDERR_FILENO, "\n           last__meal[%d] '%lu'\n",args->philo->id - 1, args->philo[i].last_meal);
-            dprintf(STDERR_FILENO, "   time awaiting meal[%d] '%lu' ms:'%ld'\n",args->philo->id - 1, (args->philo[i].last_meal + args->time_to_die), \
-            ((args->philo[i].last_meal + args->time_to_die) - args->philo[i].last_meal) - args->time_to_eat);
+            dprintf(STDERR_FILENO, "   time awaiting meal[%d] '%lu' ms:'%ld'\n",args->philo->id - 1, (args->philo[i].last_meal + args->time_to_die),eat_time_left(args, i));
             
             
             dprintf(STDERR_FILENO, "           time stamp[%d] '%lu'\n",args->philo->id - 1, get_timestamp(&current_time));
-            dprintf(STDERR_FILENO, "      time he is dead[%d] '%lu'\n",args->philo->id - 1, (get_timestamp(&current_time) - args->philo[i].last_meal));
+            
+            dprintf(STDERR_FILENO, "      total_time_left_to_live[%d] '%ld'\n",args->philo->id - 1, (eat_time_left(args, i) - args->time_to_sleep));
+
+
+
+            
             dprintf(STDERR_FILENO, "          time to die[%d] '%d'\n\n",args->philo->id - 1, args->time_to_die);
             put_death_log(&args->philo[i], "died");
             set_end_all(args);
