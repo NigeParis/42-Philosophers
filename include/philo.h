@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/18 09:01:22 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:11:19 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_input_args
 	int		stop;
 	long	start_thread;
 	
+	pthread_t handler;
 
 	pthread_mutex_t death;
 	pthread_mutex_t lock;
@@ -112,6 +113,14 @@ long    get_timestamp(struct timeval *current_time);
 
 
 void    *ft_calloc(size_t nb_elements , size_t size);
+
+int		init_mutex(t_input_args *args);
+int		make_threads(t_input_args *args);
+void    *monitor(void *args);
+void	*thread(void *thread_philo);
+
+int end_all(t_input_args *args);
+int set_end_all(t_input_args *args);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/18 09:10:01 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:31:34 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,142 @@
 
 #include "philo.h"
 
+int end_all(t_input_args *args)
+{
+    int signal;
 
-int philo_is_dead(t_current_philo *philo)
+    signal = 0;
+    pthread_mutex_lock(&args->death); 
+    signal = args->stop;
+    pthread_mutex_unlock(&args->death); 
+    return (signal);
+}
+
+int set_end_all(t_input_args *args)
+{
+    pthread_mutex_lock(&args->death); 
+    args->stop = 1;
+    pthread_mutex_unlock(&args->death); 
+    return (EXIT_SUCCESS);
+}
+
+
+
+
+
+int philo_is_dead(t_input_args *args)
 {
     struct timeval current_time;
-    
-    pthread_mutex_lock(&philo->args->lock); 
-    pthread_mutex_lock(&philo->args->death); 
-    if (((get_timestamp(&current_time) - philo->last_meal) > philo->args->time_to_die))
-    {
-        // dprintf(STDERR_FILENO, "DIED at :'%ld'\n", (long int)((get_timestamp(&current_time) - philo->last_meal) + philo->args->time_to_sleep) - philo->args->time_to_die);
-        put_death_log(philo, "died");
-        pthread_mutex_lock(&philo->args->meal); 
-        philo->args->stop = 1;
-        pthread_mutex_unlock(&philo->args->meal); 
+    int i;
 
-        pthread_mutex_unlock(&philo->args->death); 
-        pthread_mutex_unlock(&philo->args->lock); 
+    i = 0;
+    if (!args)
+        return (dprintf(STDERR_FILENO, "error pas args\n") ,EXIT_FAILURE);
+    if (end_all(args))
         return (1);
+    pthread_mutex_lock(&args->lock); 
+    pthread_mutex_lock(&args->meal); 
+    while (i < args->nbr_philo)
+    {
+        if (get_timestamp(&current_time) >= (args->philo[i].last_meal + args->time_to_die))
+        {
+            dprintf(STDERR_FILENO, "\n           last__meal[%d] '%lu'\n",args->philo->id - 1, args->philo[i].last_meal);
+            dprintf(STDERR_FILENO, "   time awaiting meal[%d] '%lu' ms:'%ld'\n",args->philo->id - 1, (args->philo[i].last_meal + args->time_to_die), \
+            ((args->philo[i].last_meal + args->time_to_die) - args->philo[i].last_meal) - args->time_to_eat);
+            
+            
+            dprintf(STDERR_FILENO, "           time stamp[%d] '%lu'\n",args->philo->id - 1, get_timestamp(&current_time));
+            dprintf(STDERR_FILENO, "      time he is dead[%d] '%lu'\n",args->philo->id - 1, (get_timestamp(&current_time) - args->philo[i].last_meal));
+            dprintf(STDERR_FILENO, "          time to die[%d] '%d'\n\n",args->philo->id - 1, args->time_to_die);
+            put_death_log(&args->philo[i], "died");
+            set_end_all(args);
+            pthread_mutex_unlock(&args->meal); 
+            pthread_mutex_unlock(&args->lock); 
+            return (1);
+        }
+
+        i++;
+
     }
-    pthread_mutex_unlock(&philo->args->death); 
-    pthread_mutex_unlock(&philo->args->lock); 
+    
+    pthread_mutex_unlock(&args->meal); 
+    pthread_mutex_unlock(&args->lock); 
     return (0);
 }
 
 
-void    philo_sleeping(t_current_philo *philo)
+int    philo_sleeping(t_current_philo *philo)
 {
+    if (end_all(philo->args))
+        return (1);
     put_log(philo, "is sleeping");
     usleep(philo->args->time_to_sleep * 1000);    
+    return (0);
+}
+
+
+int check_death(t_input_args *args)
+{
+    int i;
+    
+    i = 0;
+    if (!args)
+        return (EXIT_FAILURE);
+        
+    if (philo_is_dead(args))
+        return (EXIT_FAILURE);
+
+    return (EXIT_SUCCESS);
 }
 
 
 
-
-
-
-int    philo_eating(t_current_philo *philo, struct timeval *current_time)
+int    philo_eating(t_current_philo *philo)
 {
-        
+
+    struct timeval current_time;
     
-    
+    if (end_all(philo->args))
+        return (1);
     pthread_mutex_lock(&philo->args->lock); 
+    pthread_mutex_lock(&philo->args->meal); 
     
     put_log(philo, "is eating");
-    philo->last_meal = get_timestamp(current_time);
     philo->nbr_meals++;
+    philo[philo->id - 1].last_meal = get_timestamp(&current_time);
+    dprintf(STDERR_FILENO, "       recorded last_meal[%d] '%lu'\n",philo->id - 1, philo[philo->id - 1].last_meal);
+    
     usleep(philo->args->time_to_eat * 998);
     
     if (philo->nbr_meals >= philo->args->nbr_repas)
     {
-        pthread_mutex_lock(&philo->args->meal); 
         philo->is_full = 1;
-        pthread_mutex_unlock(&philo->args->meal); 
     }
-
+    pthread_mutex_unlock(&philo->args->meal); 
     pthread_mutex_unlock(&philo->args->lock); 
   
 
     
     return (0);
 }
+
+void    *monitor(void *table)
+{
+    t_input_args *args;
+    
+    args = (t_input_args*)table;    
+    while (!end_all(args))
+    {
+        if (check_death(args))
+        {
+            break ;
+        }
+        usleep(1);
+    }
+    return (NULL);    
+}
+
+
 
 void *thread(void *thread_philo)
 {
@@ -87,44 +162,23 @@ void *thread(void *thread_philo)
     args = philo->args;
 
    
-    while (1)
+    while (!end_all(args))
     {
-        philo_eating(philo, &current_time);
-     
+        philo_eating(philo);            
         philo_sleeping(philo);
         put_log(philo, "is thinking");
-        if (philo_is_dead(philo))
-            break ;
             
-        pthread_mutex_lock(&philo->args->meal); 
-        if (!((philo->nbr_meals < philo->args->nbr_repas) || (philo->args->nbr_repas < 1)))
-        {
-            pthread_mutex_unlock(&philo->args->meal); 
-            break ;
-        }
-        pthread_mutex_unlock(&philo->args->meal); 
+        // pthread_mutex_lock(&philo->args->meal); 
+        // if (!((philo->nbr_meals < philo->args->nbr_repas) || (philo->args->nbr_repas < 1)))
+        // {
+        //     pthread_mutex_unlock(&philo->args->meal); 
+        //     break ;
+        // }
+        // pthread_mutex_unlock(&philo->args->meal); 
         
     }
 
     return (0);    
-}
-
-int init_mutex(t_input_args *args)
-{
-    int i;
-
-    i = 0;
-
-    while (i < args->nbr_philo)
-    {
-       pthread_mutex_init(&args->fork[i], NULL);
-        i++;
-    }
-    pthread_mutex_init(&args->log, NULL);
-    pthread_mutex_init(&args->lock, NULL);
-    pthread_mutex_init(&args->death, NULL);
-    pthread_mutex_init(&args->meal, NULL);
-    return (0);
 }
 
 
@@ -144,46 +198,13 @@ int main(int argc, char *argv[])
     if (parse_args(&args, argc, argv))
         return (EXIT_FAILURE);
 
-    args.start_thread = get_timestamp(&current_time);
        
    
+    args.start_thread = get_timestamp(&current_time);
     init_mutex(&args);
 
-    i = 0;
-    while (i < args.nbr_philo)
-    {
-        args.philo[i].id = i + 1;
-        args.philo[i].args = &args;
-        pthread_create(&args.philo[i].thread, NULL, &thread, &args.philo[i]);
-        i++;
-    }
-
-    while (1)
-    {
-        usleep(1);
-  
-        pthread_mutex_lock(&args.meal); 
-
-        if (args.stop || args.philo->is_full)
-        {
-            pthread_mutex_unlock(&args.meal); 
-            break; 
-        }
-        pthread_mutex_unlock(&args.meal); 
-        
-    }    
-
-
-
-    i = 0;
-    while (i < args.nbr_philo)
-    {
-        pthread_join(args.philo[i].thread, NULL);
-        i++;
-    }
-
-    i = 0;
-
+    if (make_threads(&args))
+        return (EXIT_FAILURE);
 
 
 
