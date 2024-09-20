@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 19:56:04 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:16:51 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int philo_is_dead(t_input_args *args)
     while (i < args->nbr_philo)
     {
         pthread_mutex_lock(&args->meal);
-        if (life_time_left(args, i) < 0)
+        if (eat_time_left(args, i) < 0)
         {
             set_end_all(args);
             put_log(&args->philo[i], "died");
@@ -95,6 +95,8 @@ int philo_is_dead(t_input_args *args)
 
 int    philo_sleeping(t_current_philo *philo)
 {
+    if (philo_is_dead(philo->args))
+        return (EXIT_FAILURE);
     put_log(philo, "is sleeping");
     usleep(philo->args->time_to_sleep * 1000);    
     return (0);
@@ -103,9 +105,6 @@ int    philo_sleeping(t_current_philo *philo)
 
 int check_death(t_input_args *args)
 {
-    int i;
-    
-    i = 0;
     if (!args)
         return (EXIT_FAILURE);
         
@@ -122,14 +121,14 @@ int    philo_eating(t_current_philo *philo)
     
 
     
-    put_log(philo, "is eating");
     pthread_mutex_lock(&philo->args->meal); 
+    put_log(philo, "is eating");
     philo->nbr_meals++;
-    philo[philo->id - 1].last_meal = get_timestamp();
+    philo[philo->id -1].last_meal = get_timestamp();
     //dprintf(STDERR_FILENO, "       recorded last_meal[%d] '%lu'\n",philo->id - 1, philo[philo->id - 1].last_meal);
+    usleep(philo->args->time_to_eat * 1000);
     pthread_mutex_unlock(&philo->args->meal);  
   
-    usleep(philo->args->time_to_eat * 1000);
     
     if (philo->nbr_meals >= philo->args->nbr_repas)
     {
@@ -166,8 +165,9 @@ void *thread(void *thread_philo)
     philo = (t_current_philo *)thread_philo;
     // philo->start_time = get_timestamp(&current_time);
     args = philo->args;
+    
+    args->start_thread = start_philo_timer(args, 6000);
 
-   
     while (!end_all(args))
     {
         if (philo_eating(philo))
@@ -193,10 +193,10 @@ void *thread(void *thread_philo)
 
 int main(int argc, char *argv[])
 {
-    int i;
+    //int i;
     t_input_args args;
 
-    i = 0;
+    //i = 0;
 
     if (is_number_of_args(argc))
         return (EXIT_FAILURE);
@@ -209,17 +209,12 @@ int main(int argc, char *argv[])
    
     init_mutex(&args);
 
+
+
     if (make_threads(&args))
         return (EXIT_FAILURE);
 
 
 
-
-
-    if (!args.stop)
-    {
-        printf("end threads\n");
-        printf("total_time : usec: '%lu'\n", total_time(&args));
-    }
     return (EXIT_SUCCESS);
 }

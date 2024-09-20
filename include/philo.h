@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 19:57:31 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:10:46 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ void	*thread(void *thread_philo);
 int end_all(t_input_args *args);
 int set_end_all(t_input_args *args);
 
+long    start_philo_timer(t_input_args *args, long waitime);
 
 #endif
