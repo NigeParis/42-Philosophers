@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 13:06:12 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/21 00:03:18 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@
 # include <sys/time.h>
 # include <stdint.h>
 
-
 # define MAX_PHILO 250
 # define MIN_TIME 60
 
-struct s_input_args; // Forward declaration
+struct s_input_args;
 
 typedef struct s_input_args t_input_args;
 
@@ -70,59 +69,36 @@ typedef struct s_input_args
 	
 } t_input_args;
 
+int				ft_atoi(char *str);
+void			ft_init_args(t_input_args *args);
+void			ft_putstr_fd(char *str, int fd);
+void			error_args(char *str);
+int				is_number_of_args(int argc);
+int				is_negative_number(char *argv[]);
+int 			is_too_many_philo(int philo);
+int				ft_isdigit(char c);
+int				ft_isspace(char c);
+int				is_not_enough_time(int time);
+int				is_not_number(char *arg);
+int				parse_args(t_input_args *args, int argc, char *argv[]);
+void			print_input(t_input_args *args, t_current_philo *philo, int i);
+void    		put_log(t_current_philo *philo, char *str);
+void    		put_death_log(t_current_philo *philo, char *str);
+long long		get_timestamp(void);
+int				init_mutex(t_input_args *args);
+int				make_threads(t_input_args *args);
+void    		*monitor(void *args);
+void			*thread(void *thread_philo);
+int				end_all(t_input_args *args);
+int				set_end_all(t_input_args *args);
+void			start_philo_timer(long waitime);
+long long int	eat_time_left(t_input_args *args, int i);
+long long int	life_time_left(t_input_args *args, int i);
+int				philo_eating(t_current_philo *philo);
+int				philo_sleeping(t_current_philo *philo);
+int				philo_thinking(t_current_philo *philo);
+void    		ft_sleep(long long wait, t_input_args *args);
 
-
-
-/// @brief function ft_atoi modified
-/// @brief acceptes ----1 +++5  "    -89"
-/// @param str 
-/// @return -1 if bigger than INT_MAX
-int		ft_atoi(char *str);
-
-/// @brief initalise to zero all int in the stucture
-/// @brief checks if args exists
-/// @param args 
-void	ft_init_args(t_input_args *args);
-
-void	ft_putstr_fd(char *str, int fd);
-void	error_args(char *str);
-int		is_number_of_args(int argc);
-int		is_negative_number(char *argv[]);
-int 	is_too_many_philo(int philo);
-int		ft_isdigit(char c);
-int		ft_isspace(char c);
-int		is_not_enough_time(int time);
-int		is_not_number(char *arg);
-
-
-
-/// @brief function collects args and parses in to structure args
-/// @param args 
-/// @param argc 
-/// @param argv 
-/// @return SUCCESS or FAILUREget_timestamp
-int		parse_args(t_input_args *args, int argc, char *argv[]);
-
-void	print_input(t_input_args *args, t_current_philo *philo, int i);
-
-void    put_log(t_current_philo *philo, char *str);
-void    put_death_log(t_current_philo *philo, char *str);
-long	long	get_timestamp(void);
-
-
-void    *ft_calloc(size_t nb_elements , size_t size);
-
-int		init_mutex(t_input_args *args);
-int		make_threads(t_input_args *args);
-void    *monitor(void *args);
-void	*thread(void *thread_philo);
-
-int		end_all(t_input_args *args);
-int		set_end_all(t_input_args *args);
-
-void    start_philo_timer(long waitime);
-long long int    eat_time_left(t_input_args *args, int i);
-long long int    life_time_left(t_input_args *args, int i);
-
+void    		*ft_calloc(size_t nb_elements , size_t size);
 
 #endif

@@ -30,3 +30,12 @@ void    start_philo_timer(long waitime)
         continue ;
     }
 }
+
+void    ft_sleep(long long wait, t_input_args *args)
+{
+    long long sleep_time;
+
+    sleep_time = get_timestamp() + wait;
+    while (!end_all(args) && get_timestamp() < sleep_time)
+        usleep(50);   
+}
