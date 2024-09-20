@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 09:10:46 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/20 13:06:12 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <stdint.h>
 
 
-# define MAX_PHILO 200
+# define MAX_PHILO 250
 # define MIN_TIME 60
 
 struct s_input_args; // Forward declaration
@@ -33,11 +33,11 @@ typedef struct s_input_args t_input_args;
 
 typedef struct s_life_of_philo
 {
-	int		id;
-	int		nbr_meals;
-	int		is_full;
-	long	start_time;
-	long	last_meal;
+	int			id;
+	int			nbr_meals;
+	int			is_full;
+	long		start_time;
+	long long   last_meal;
 
 	pthread_t thread;
 
@@ -60,12 +60,11 @@ typedef struct s_input_args
 	
 	//pthread_t handler;
 
+	pthread_mutex_t check_death;
 	pthread_mutex_t death;
 	pthread_mutex_t lock;
-	pthread_mutex_t lock_status;
 	pthread_mutex_t log;
 	pthread_mutex_t meal;
-	pthread_mutex_t fork[MAX_PHILO];
 	t_current_philo	philo[MAX_PHILO];
 	//t_current_philo	*philo;
 	
@@ -101,15 +100,14 @@ int		is_not_number(char *arg);
 /// @param args 
 /// @param argc 
 /// @param argv 
-/// @return SUCCESS or FAILURE
+/// @return SUCCESS or FAILUREget_timestamp
 int		parse_args(t_input_args *args, int argc, char *argv[]);
 
-void	print_input(t_input_args args, struct timeval current_time);
+void	print_input(t_input_args *args, t_current_philo *philo, int i);
+
 void    put_log(t_current_philo *philo, char *str);
 void    put_death_log(t_current_philo *philo, char *str);
-long    time_diff(t_input_args *args, struct timeval current_time, int i);
-long	total_time(t_input_args *args);
-long    get_timestamp();
+long	long	get_timestamp(void);
 
 
 void    *ft_calloc(size_t nb_elements , size_t size);
@@ -119,9 +117,12 @@ int		make_threads(t_input_args *args);
 void    *monitor(void *args);
 void	*thread(void *thread_philo);
 
-int end_all(t_input_args *args);
-int set_end_all(t_input_args *args);
+int		end_all(t_input_args *args);
+int		set_end_all(t_input_args *args);
 
-long    start_philo_timer(t_input_args *args, long waitime);
+void    start_philo_timer(long waitime);
+long long int    eat_time_left(t_input_args *args, int i);
+long long int    life_time_left(t_input_args *args, int i);
+
 
 #endif

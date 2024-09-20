@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 19:58:37 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/20 11:28:54 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,5 @@ void    *ft_calloc(size_t nb_elements , size_t size)
     while (i < total_size)
         c[i++] = 0;
     return (ptr);
-}
-
-
-
-void    put_log(t_current_philo *philo, char *str)
-{
-    pthread_mutex_lock(&philo->args->log); 
-    pthread_mutex_lock(&philo->args->death); 
-
-    
-    
-    if ((!philo->args->stop) && (!philo->is_full))
-        printf("%lu ms philo[%d] %s\n", \
-    (get_timestamp() - philo->args->start_thread), philo->id - 1, str);
-    else if ((philo->args->stop) && (philo->args->status == 0))
-    {
-        printf("%lu ms philo[%d] %s\n", ((get_timestamp() - philo->args->start_thread)), philo->id - 1, str);
-        philo->args->status = 1;
-    }
-    pthread_mutex_unlock(&philo->args->death); 
-    pthread_mutex_unlock(&philo->args->log); 
-    
 }
 

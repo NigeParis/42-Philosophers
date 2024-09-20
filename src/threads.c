@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 19:52:27 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:32:30 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,18 @@
 int make_threads(t_input_args *args)
 {
     int i;
-
-    // if (pthread_create(&args->handler, NULL, &monitor, args))
-    //     return (EXIT_FAILURE);
-    i = 0;
     
-    args->start_thread = get_timestamp();
+    i = 0;
     while (i < args->nbr_philo)
     {
-        args->philo[i].id = i + 1;
-        args->philo[i].args = args;
+
         if (pthread_create(&args->philo[i].thread, NULL, &thread, &args->philo[i]))
             return (EXIT_FAILURE);
+       
+        usleep(10);
         i++;
     }
-
+    print_input(args, args->philo, 0);
     monitor(args);
     
     i = 0;
@@ -39,8 +36,6 @@ int make_threads(t_input_args *args)
             return (EXIT_FAILURE);
         i++;
     }
-    // if (pthread_join(args->handler, NULL))
-    //     return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
 }
 

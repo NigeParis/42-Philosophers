@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_time.c                                       :+:      :+:    :+:   */
+/*   utils_log.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/04 10:48:56 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 12:59:27 by nrobinso         ###   ########.fr       */
+/*   Created: 2024/09/20 11:26:44 by nrobinso          #+#    #+#             */
+/*   Updated: 2024/09/20 13:07:46 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-long long   get_timestamp(void)
+void    put_log(t_current_philo *philo, char *str)
 {
-    struct timeval current_time;
-    long long   time_stamp;
+    long long int stamp;
+    int      id;
+
+    pthread_mutex_lock(&philo->args->meal); 
+    id = philo->id;
+    pthread_mutex_unlock(&philo->args->meal); 
     
-    gettimeofday(&current_time, NULL);
-    time_stamp = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
-    return (time_stamp);
+
+    stamp = (get_timestamp() - philo->args->start_thread);
+    
+    pthread_mutex_lock(&philo->args->log); 
+    printf("%llu ms philo[%d] %s\n", stamp, id, str);
+    pthread_mutex_unlock(&philo->args->log); 
 }
 
-void    start_philo_timer(long waitime)
-{
-    while (get_timestamp() < waitime)
-    {
-        continue ;
-    }
-}

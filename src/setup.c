@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/19 08:54:14 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:38:35 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void    ft_init_args(t_input_args *args)
 {
+    int i;
+
+    i = 0;
+    
 	if (!args)
 		return ;
-    args->id = 0;
-    args->nbr_philo = 0;
     args->nbr_forks = 0;
     args->time_to_die = 0;
     args->time_to_eat = 0;
@@ -26,6 +28,17 @@ void    ft_init_args(t_input_args *args)
     args->status = 0;
     args->stop = 0;
     args->start_thread = 0;
+
+    while (i < MAX_PHILO)
+    {
+        args->philo[i].id = i;
+        args->philo[i].args = args;
+        args->philo[i].last_meal = get_timestamp();
+        i++;
+    }
+
+
+    
 }
 
 int parse_args(t_input_args *args, int argc, char *argv[])
@@ -57,20 +70,22 @@ int parse_args(t_input_args *args, int argc, char *argv[])
 
 int init_mutex(t_input_args *args)
 {
-    int i;
+    // int i;
 
-    i = 0;
-    while (i < args->nbr_philo)
-    {
-        if (pthread_mutex_init(&args->fork[i], NULL))
-            return (EXIT_FAILURE);
-        i++;
-    }
+    // i = 0;
+    // while (i < args->nbr_philo)
+    // {
+    //     if (pthread_mutex_init(&args->fork[i], NULL))
+    //         return (EXIT_FAILURE);
+    //     i++;
+    // }
     if (pthread_mutex_init(&args->log, NULL))
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->lock, NULL))
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->death, NULL))
+        return (EXIT_FAILURE);
+    if (pthread_mutex_init(&args->check_death, NULL))
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->meal, NULL))
         return (EXIT_FAILURE);
