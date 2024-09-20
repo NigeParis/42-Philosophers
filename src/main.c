@@ -102,7 +102,7 @@ void    ft_sleep(long long wait, t_input_args *args)
 int    philo_sleeping(t_current_philo *philo)
 {
     put_log(philo, "is sleeping");
-    ft_sleep(philo->args->time_to_sleep, philo->args);
+    ft_sleep((long long)philo->args->time_to_sleep, philo->args);
     //usleep(philo->args->time_to_sleep * 1000); 
     return (0);
 }
@@ -122,7 +122,6 @@ int check_death(t_input_args *args)
 int philo_thinking(t_current_philo *philo)
 {
     put_log(philo, "is thinking");
-    
     return (EXIT_SUCCESS);
 }
 
@@ -138,10 +137,10 @@ int    philo_eating(t_current_philo *philo)
     pthread_mutex_lock(&philo->args->meal); 
     philo->nbr_meals++;
     philo->last_meal = get_timestamp();
+    ft_sleep((long long)philo->args->time_to_eat, philo->args);
+    pthread_mutex_unlock(&philo->args->meal);  
     
     //usleep(philo->args->time_to_eat * 1000);
-    ft_sleep(philo->args->time_to_eat, philo->args);
-    pthread_mutex_unlock(&philo->args->meal);  
     
     return (0);
 }
