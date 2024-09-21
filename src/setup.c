@@ -6,7 +6,7 @@
 /*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 16:43:11 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/21 16:46:52 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int init_mutex(t_input_args *args)
     if (pthread_mutex_init(&args->lock, NULL))
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->death, NULL))
-        return (EXIT_FAILURE);
-    if (pthread_mutex_init(&args->check_death, NULL))
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->meal, NULL))
         return (EXIT_FAILURE);

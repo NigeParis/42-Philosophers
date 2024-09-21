@@ -6,7 +6,7 @@
 /*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 16:43:33 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/21 16:46:43 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_input_args
 	
 	//pthread_t handler;
 
-	pthread_mutex_t check_death;
 	pthread_mutex_t death;
 	pthread_mutex_t lock;
 	pthread_mutex_t log;
@@ -98,7 +97,6 @@ int				philo_eating(t_current_philo *philo);
 int				philo_sleeping(t_current_philo *philo);
 int				philo_thinking(t_current_philo *philo);
 void    		ft_sleep(long long wait, t_input_args *args);
-int				check_death(t_input_args *args);
 int				philo_is_dead(t_input_args *args);
 
 void    put_death_log(t_current_philo *philo, char *str);

@@ -6,7 +6,7 @@
 /*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 10:27:12 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/21 17:25:09 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int make_threads(t_input_args *args)
         i++;
     }
     print_input(args, args->philo, 0);
+    
     monitor(args);
     i = 0;
     while (i < args->nbr_philo)
@@ -47,9 +48,12 @@ void *thread(void *thread_philo)
     philo = (t_current_philo *)thread_philo;
     args = philo->args;
     start_philo_timer(args->start_thread); 
-    while (!end_all(args))
-    {
+
+    while (1)
+    { 
         philo_eating(philo);
+        if (end_all(args))
+            break ;
         philo_sleeping(philo);
         philo_thinking(philo);
     }
