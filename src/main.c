@@ -6,7 +6,7 @@
 /*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 23:42:43 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/21 16:44:20 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ void    *monitor(void *table)
     t_input_args *args;
     
     args = (t_input_args*)table;    
+    usleep(1000);
     while (!end_all(args))
     {
-        // if (check_death(args))
-        // {
-        //     break ;
-        // }
-        usleep(500);
+        if (philo_is_dead(args))
+        {
+            break ;
+        }
+
     }
     return (NULL);    
 }

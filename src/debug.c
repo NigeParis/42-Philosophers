@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:36:53 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 13:07:27 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:35:35 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_input(t_input_args *args, t_current_philo *philo, int i)
 
     dprintf(STDERR_FILENO, "\n             last__meal[%d] '%llu'\n",args->philo->id, \
     args->philo[i].last_meal);
-    dprintf(STDERR_FILENO, "     time awaiting meal[%d] '%llu' ms:'%lld'\n",args->philo->id, \
+    dprintf(STDERR_FILENO, "          eat_time_left[%d] '%llu' ms:'%lld'\n",args->philo->id, \
     (args->philo[i].last_meal + args->time_to_die),eat_time_left(args, i));
     dprintf(STDERR_FILENO, "             time stamp[%d] '%lld'\n",args->philo->id, get_timestamp());
     dprintf(STDERR_FILENO, "total_time_left_to_live[%d] '%lld'\n",args->philo->id, life_time_left(args, i));            

@@ -6,7 +6,7 @@
 /*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 23:33:25 by nige42            #+#    #+#             */
-/*   Updated: 2024/09/21 00:04:28 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/21 16:42:35 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int philo_is_dead(t_input_args *args)
         return (1);
     while (i < args->nbr_philo)
     {
+
         pthread_mutex_lock(&args->meal);
         if (eat_time_left(args, i) < 0)
         {
-            put_log(&args->philo[i], "died");
+            put_death_log(&args->philo[i], "died");
             set_end_all(args);
             
- 
 
 
             pthread_mutex_unlock(&args->meal); 

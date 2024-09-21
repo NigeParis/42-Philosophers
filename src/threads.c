@@ -6,7 +6,7 @@
 /*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 23:56:31 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/21 10:27:12 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int    philo_eating(t_current_philo *philo)
     philo->nbr_meals++;
     philo->last_meal = get_timestamp();
     ft_sleep((long long)philo->args->time_to_eat, philo->args);
+    if (eat_time_left(philo->args, 0) < 0)
+        set_end_all(philo->args);
     pthread_mutex_unlock(&philo->args->meal);  
     return (EXIT_SUCCESS);
 }
