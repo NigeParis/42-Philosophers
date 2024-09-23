@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:36:53 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 16:35:35 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/23 09:55:24 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_input(t_input_args *args, t_current_philo *philo, int i)
+void	DEBUG_print_input(t_input_args *args, t_current_philo *philo, int i)
 {
     (void)philo;
     

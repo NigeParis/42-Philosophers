@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 16:46:43 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/23 16:41:31 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ typedef struct s_input_args
 	int		nbr_repas;
 	int		status;
 	int		stop;
-	long	start_thread;
+	long	long start_thread;
+	long	long stop_thread;
 	
 	//pthread_t handler;
 
@@ -63,8 +64,8 @@ typedef struct s_input_args
 	pthread_mutex_t lock;
 	pthread_mutex_t log;
 	pthread_mutex_t meal;
+	pthread_mutex_t	fork[MAX_PHILO];
 	t_current_philo	philo[MAX_PHILO];
-	//t_current_philo	*philo;
 	
 } t_input_args;
 
@@ -80,7 +81,6 @@ int				ft_isspace(char c);
 int				is_not_enough_time(int time);
 int				is_not_number(char *arg);
 int				parse_args(t_input_args *args, int argc, char *argv[]);
-void			print_input(t_input_args *args, t_current_philo *philo, int i);
 void    		put_log(t_current_philo *philo, char *str);
 void    		put_death_log(t_current_philo *philo, char *str);
 long long		get_timestamp(void);
@@ -99,9 +99,12 @@ int				philo_thinking(t_current_philo *philo);
 void    		ft_sleep(long long wait, t_input_args *args);
 int				philo_is_dead(t_input_args *args);
 
-void    put_death_log(t_current_philo *philo, char *str);
-
+void    		put_are_full_log(t_current_philo *philo, char *str);
+void  			put_death_log(t_current_philo *philo, char *str);
+int 			philo_all_full(t_current_philo *philo);
 
 void    		*ft_calloc(size_t nb_elements , size_t size);
+
+void			DEBUG_print_input(t_input_args *args, t_current_philo *philo, int i);
 
 #endif

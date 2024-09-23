@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 16:46:52 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/23 13:11:45 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,9 @@ int parse_args(t_input_args *args, int argc, char *argv[])
 
 int init_mutex(t_input_args *args)
 {
-    // int i;
-
-    // i = 0;
-    // while (i < args->nbr_philo)
-    // {
-    //     if (pthread_mutex_init(&args->fork[i], NULL))
-    //         return (EXIT_FAILURE);
-    //     i++;
-    // }
+    int i;
+    
+    i = 0;
     if (pthread_mutex_init(&args->log, NULL))
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->lock, NULL))
@@ -87,5 +81,11 @@ int init_mutex(t_input_args *args)
         return (EXIT_FAILURE);
     if (pthread_mutex_init(&args->meal, NULL))
         return (EXIT_FAILURE);
+    while (i < args->nbr_philo)
+    {
+        if (pthread_mutex_init(&args->fork[i], NULL))
+            return (EXIT_FAILURE);
+        i++;
+    }
     return (EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/21 17:25:09 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/23 16:37:40 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ int make_threads(t_input_args *args)
         if (pthread_create(&args->philo[i].thread, \
         NULL, &thread, &args->philo[i]))
             return (EXIT_FAILURE);
-        usleep(10);
         i++;
     }
-    print_input(args, args->philo, 0);
+    // DEBUG_print_input(args, args->philo, 0);
     
     monitor(args);
     i = 0;
@@ -47,38 +46,85 @@ void *thread(void *thread_philo)
         return (NULL);
     philo = (t_current_philo *)thread_philo;
     args = philo->args;
-    start_philo_timer(args->start_thread); 
-
+    if ((philo->id) % 2 == 0)
+        usleep(1);
     while (1)
     { 
         philo_eating(philo);
         if (end_all(args))
             break ;
         philo_sleeping(philo);
+        if (end_all(args))
+            break ;
         philo_thinking(philo);
+        if (end_all(args))
+            break ;
     }
     return (EXIT_SUCCESS);    
 }
 
 int    philo_eating(t_current_philo *philo)
 {
-    if (!philo)
-        return (set_end_all(philo->args), EXIT_FAILURE);
+    int fork_a;
+    int fork_b;
+
+    pthread_mutex_lock(&philo->args->log);  
+    fork_a = philo->id;
+    fork_b = philo->id + 1;
+    if (philo->id + 1 >= philo->args->nbr_forks)
+        fork_b = 0;
+    pthread_mutex_unlock(&philo->args->log);  
+
+    
+    if (philo->id % 2 == 0)
+    {
+        // dprintf(STDERR_FILENO, "PHILO ID: %d  - FORK LEFT %d FORK RIGHT %d\n", philo->id, fork_a, fork_b);
+        pthread_mutex_lock(&philo->args->fork[fork_a]);
+        put_log(philo, "has taken a fork");
+        pthread_mutex_lock(&philo->args->fork[fork_b]);
+        put_log(philo, "has taken a fork");
+    }
+    else
+    {   
+        // dprintf(STDERR_FILENO, "PHILO ID: %d  - FORK LEFT %d FORK RIGHT %d\n", philo->id, fork_a, fork_b);
+        pthread_mutex_lock(&philo->args->fork[fork_b]);
+        put_log(philo, "has taken a fork");
+        pthread_mutex_lock(&philo->args->fork[fork_a]);
+        put_log(philo, "has taken a fork");
+    }
+    
+        
+    //dprintf(STDERR_FILENO, "fork_a'%d' fork_b '%d' \n", fork_a, fork_b);
+    
     put_log(philo, "is eating");
     pthread_mutex_lock(&philo->args->meal); 
+    // if (!philo->is_full)
     philo->nbr_meals++;
     philo->last_meal = get_timestamp();
-    ft_sleep((long long)philo->args->time_to_eat, philo->args);
-    if (eat_time_left(philo->args, 0) < 0)
-        set_end_all(philo->args);
+    if (philo->nbr_meals >= philo->args->nbr_repas)
+        philo->is_full = 1;
+    
     pthread_mutex_unlock(&philo->args->meal);  
+    ft_sleep((long long)philo->args->time_to_eat, philo->args);
+
+ 
+    if (fork_a %2 == 0)
+    {
+        pthread_mutex_unlock(&philo->args->fork[fork_b]);
+        pthread_mutex_unlock(&philo->args->fork[fork_a]);
+    }
+    else
+    {
+        pthread_mutex_unlock(&philo->args->fork[fork_a]);
+        pthread_mutex_unlock(&philo->args->fork[fork_b]);
+        
+    }
+ 
     return (EXIT_SUCCESS);
 }
 
 int    philo_sleeping(t_current_philo *philo)
 {
-    if (!philo)
-        return (set_end_all(philo->args),EXIT_FAILURE);
     put_log(philo, "is sleeping");
     ft_sleep((long long)philo->args->time_to_sleep, philo->args);
     return (EXIT_SUCCESS);
@@ -86,8 +132,8 @@ int    philo_sleeping(t_current_philo *philo)
 
 int philo_thinking(t_current_philo *philo)
 {
-    if (!philo)
-        return (set_end_all(philo->args),EXIT_FAILURE);
     put_log(philo, "is thinking");
+    if ((philo->args->nbr_philo % 2) != 0)
+        usleep(1);
     return (EXIT_SUCCESS);
 }
