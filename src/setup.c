@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/23 13:11:45 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:00:30 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void    ft_init_args(t_input_args *args)
     args->status = 0;
     args->stop = 0;
     args->start_thread = 0;
+    args->sync_thread = 0;
 
     while (i < MAX_PHILO)
     {

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/23 16:41:31 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:59:58 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_input_args
 	int		status;
 	int		stop;
 	long	long start_thread;
+	long	long sync_thread;
 	long	long stop_thread;
 	
 	//pthread_t handler;

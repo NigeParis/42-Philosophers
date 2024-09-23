@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/23 16:37:40 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/23 19:34:32 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int make_threads(t_input_args *args)
     i = 0;
     while (i < args->nbr_philo)
     {
-        if (pthread_join(args->philo[i].thread, NULL))
-            return (EXIT_FAILURE);
+        pthread_join(args->philo[i].thread, NULL);
         i++;
     }
     return (EXIT_SUCCESS);
@@ -46,8 +45,7 @@ void *thread(void *thread_philo)
         return (NULL);
     philo = (t_current_philo *)thread_philo;
     args = philo->args;
-    if ((philo->id) % 2 == 0)
-        usleep(1);
+    if ((philo->id + 1) % 2 == 0)
     while (1)
     { 
         philo_eating(philo);
@@ -63,65 +61,59 @@ void *thread(void *thread_philo)
     return (EXIT_SUCCESS);    
 }
 
-int    philo_eating(t_current_philo *philo)
+int philo_eating(t_current_philo *philo)
 {
     int fork_a;
     int fork_b;
 
-    pthread_mutex_lock(&philo->args->log);  
     fork_a = philo->id;
-    fork_b = philo->id + 1;
-    if (philo->id + 1 >= philo->args->nbr_forks)
-        fork_b = 0;
-    pthread_mutex_unlock(&philo->args->log);  
+    fork_b = (philo->id + 1) % philo->args->nbr_forks;
 
-    
     if (philo->id % 2 == 0)
     {
-        // dprintf(STDERR_FILENO, "PHILO ID: %d  - FORK LEFT %d FORK RIGHT %d\n", philo->id, fork_a, fork_b);
         pthread_mutex_lock(&philo->args->fork[fork_a]);
         put_log(philo, "has taken a fork");
+        usleep(100); // Ajout d'un léger délai pour éviter les interblocages
         pthread_mutex_lock(&philo->args->fork[fork_b]);
         put_log(philo, "has taken a fork");
     }
     else
-    {   
-        // dprintf(STDERR_FILENO, "PHILO ID: %d  - FORK LEFT %d FORK RIGHT %d\n", philo->id, fork_a, fork_b);
+    {
         pthread_mutex_lock(&philo->args->fork[fork_b]);
         put_log(philo, "has taken a fork");
+        usleep(100); // Ajout d'un léger délai pour éviter les interblocages
         pthread_mutex_lock(&philo->args->fork[fork_a]);
         put_log(philo, "has taken a fork");
     }
-    
-        
-    //dprintf(STDERR_FILENO, "fork_a'%d' fork_b '%d' \n", fork_a, fork_b);
-    
+
     put_log(philo, "is eating");
-    pthread_mutex_lock(&philo->args->meal); 
-    // if (!philo->is_full)
+    pthread_mutex_lock(&philo->args->meal);
     philo->nbr_meals++;
     philo->last_meal = get_timestamp();
-    if (philo->nbr_meals >= philo->args->nbr_repas)
+    if ((philo->args->nbr_repas > 0) && (philo->nbr_meals >= philo->args->nbr_repas))
         philo->is_full = 1;
-    
-    pthread_mutex_unlock(&philo->args->meal);  
+    pthread_mutex_unlock(&philo->args->meal);
+
     ft_sleep((long long)philo->args->time_to_eat, philo->args);
 
- 
-    if (fork_a %2 == 0)
+    if (philo->id % 2 == 0)
     {
-        pthread_mutex_unlock(&philo->args->fork[fork_b]);
         pthread_mutex_unlock(&philo->args->fork[fork_a]);
+        usleep(100);
+        pthread_mutex_unlock(&philo->args->fork[fork_b]);
     }
     else
     {
-        pthread_mutex_unlock(&philo->args->fork[fork_a]);
         pthread_mutex_unlock(&philo->args->fork[fork_b]);
-        
+        usleep(100);
+        pthread_mutex_unlock(&philo->args->fork[fork_a]);
     }
- 
+
     return (EXIT_SUCCESS);
 }
+
+
+
 
 int    philo_sleeping(t_current_philo *philo)
 {
