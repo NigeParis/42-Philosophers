@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 14:41:43 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:53:45 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void *thread(void *thread_philo)
     philo = (t_current_philo *)thread_philo;
     args = philo->args;
     if ((philo->id + 1) % 2 == 0)
-        ft_sleep(100, args);
+        ft_sleep(150, args);
     while (!end_all(args))
     { 
         philo_eating(philo);
@@ -59,20 +59,21 @@ void *thread(void *thread_philo)
     }
     return (EXIT_SUCCESS);    
 }
-
 int philo_eating(t_current_philo *philo)
 {
     int fork_a;
     int fork_b;
 
+    //pthread_mutex_lock(&philo->args->log);
     fork_a = philo->id;
     fork_b = (philo->id + 1) % philo->args->nbr_forks;
+    //pthread_mutex_unlock(&philo->args->log);
 
-    if (philo->id % 2 == 0)
+    if (fork_a % 2 == 0)
     {
         pthread_mutex_lock(&philo->args->fork[fork_a]);
         put_log(philo, "has taken a fork");
-        usleep(100); // Ajout d'un léger délai pour éviter les interblocages
+        usleep(60); // Ajout d'un léger délai pour éviter les interblocages
         pthread_mutex_lock(&philo->args->fork[fork_b]);
         put_log(philo, "has taken a fork");
     }
@@ -80,7 +81,7 @@ int philo_eating(t_current_philo *philo)
     {
         pthread_mutex_lock(&philo->args->fork[fork_b]);
         put_log(philo, "has taken a fork");
-        usleep(100); // Ajout d'un léger délai pour éviter les interblocages
+        usleep(55); // Ajout d'un léger délai pour éviter les interblocages
         pthread_mutex_lock(&philo->args->fork[fork_a]);
         put_log(philo, "has taken a fork");
     }
@@ -95,18 +96,19 @@ int philo_eating(t_current_philo *philo)
     pthread_mutex_unlock(&philo->args->meal);
     ft_sleep((long long)philo->args->time_to_eat, philo->args);
 
-    if ((philo->id % 2 || ((philo->id + 1) % 5 == 0 || (philo->id + 1) % 3 == 0)))
+    if ((fork_a % 2 || ((fork_a + 1) % 5 == 0 || (fork_a + 1) % 3 == 0)))
     {
         pthread_mutex_unlock(&philo->args->fork[fork_a]);
-        usleep(50);
+        usleep(60);
         pthread_mutex_unlock(&philo->args->fork[fork_b]);
     }
     else
     {
         pthread_mutex_unlock(&philo->args->fork[fork_b]);
-        usleep(100);
+        usleep(55);
         pthread_mutex_unlock(&philo->args->fork[fork_a]);
     }
+
 
     return (EXIT_SUCCESS);
 }
@@ -124,7 +126,7 @@ int    philo_sleeping(t_current_philo *philo)
 int philo_thinking(t_current_philo *philo)
 {
     put_log(philo, "is thinking");
-    if ((philo->args->nbr_philo % 2) != 0)
+    if ((philo->args->nbr_philo % 2) == 0)
         usleep(1);
     return (EXIT_SUCCESS);
 }

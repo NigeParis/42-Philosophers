@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 13:18:41 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:45:58 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,10 @@ void    *monitor(void *table)
     
     args = (t_input_args*)table;  
 
-    while (1)
-    {
-        if (philo_is_dead(args))
-        {   
-            break ;
-        }
-        if (philo_all_full(args->philo))
-        {
-            // put_are_full_log(args->philo, "are full");
-            break ;
-        }
+    while ((all_full(args) != 2) && (end_all(args)) != 1)
+    {   
+        philo_all_full(args->philo);
+        philo_is_dead(args);
     }
     return (NULL);    
 }
@@ -91,7 +84,6 @@ int main(int argc, char *argv[])
     if (args.nbr_philo == 1)
         return (0);
 
-    args.sync_thread = get_timestamp() + (30 * args.nbr_philo);   
     args.start_thread = get_timestamp();   
    
     if (init_mutex(&args))

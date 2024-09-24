@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 10:48:56 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 13:25:23 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:34:49 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void    ft_sleep(long long wait, t_input_args *args)
     (void)args;
     sleep_time = get_timestamp() + wait;
     while (get_timestamp() < sleep_time)
-        usleep(10);   
+        usleep(2);   
 }
 
 

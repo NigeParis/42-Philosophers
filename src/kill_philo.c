@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 23:33:25 by nige42            #+#    #+#             */
-/*   Updated: 2024/09/23 17:16:00 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:37:56 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,21 @@ int end_all(t_input_args *args)
     pthread_mutex_unlock(&args->death); 
     return (signal);
 }
+
+int all_full(t_input_args *args)
+{
+    int signal;
+
+    signal = 0;
+    pthread_mutex_lock(&args->death); 
+    signal = args->stop;
+    pthread_mutex_unlock(&args->death);
+    return (signal);
+}
+
+
+
+
 
 int set_end_all(t_input_args *args)
 {

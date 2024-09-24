@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 13:25:11 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:58:22 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int				philo_is_dead(t_input_args *args);
 void    		put_are_full_log(t_current_philo *philo, char *str);
 void  			put_death_log(t_current_philo *philo, char *str);
 int 			philo_all_full(t_current_philo *philo);
+int 			all_full(t_input_args *args);
 
 void			DEBUG_print_input(t_input_args *args, t_current_philo *philo, int i);
 
