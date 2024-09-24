@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/23 18:00:30 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:37:08 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 void    ft_init_args(t_input_args *args)
 {
     int i;
+    long long time;
 
     i = 0;
-    
+    time = get_timestamp();
 	if (!args)
 		return ;
     args->nbr_forks = 0;
@@ -34,7 +35,9 @@ void    ft_init_args(t_input_args *args)
     {
         args->philo[i].id = i;
         args->philo[i].args = args;
-        args->philo[i].last_meal = get_timestamp();
+        args->philo[i].nbr_meals = 0;
+        args->philo[i].is_full = 0;
+        args->philo[i].last_meal = time;
         i++;
     }
 

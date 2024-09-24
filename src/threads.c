@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/23 19:34:32 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 14:41:43 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int make_threads(t_input_args *args)
     i = 0;
     while (i < args->nbr_philo)
     {
-        pthread_join(args->philo[i].thread, NULL);
+        if (pthread_join(args->philo[i].thread, NULL))
+            return (EXIT_FAILURE);
         i++;
     }
     return (EXIT_SUCCESS);
@@ -46,17 +47,15 @@ void *thread(void *thread_philo)
     philo = (t_current_philo *)thread_philo;
     args = philo->args;
     if ((philo->id + 1) % 2 == 0)
-    while (1)
+        ft_sleep(100, args);
+    while (!end_all(args))
     { 
         philo_eating(philo);
-        if (end_all(args))
-            break ;
+       
         philo_sleeping(philo);
-        if (end_all(args))
-            break ;
+       
         philo_thinking(philo);
-        if (end_all(args))
-            break ;
+       
     }
     return (EXIT_SUCCESS);    
 }
@@ -90,16 +89,16 @@ int philo_eating(t_current_philo *philo)
     pthread_mutex_lock(&philo->args->meal);
     philo->nbr_meals++;
     philo->last_meal = get_timestamp();
-    if ((philo->args->nbr_repas > 0) && (philo->nbr_meals >= philo->args->nbr_repas))
+    if ((philo->args->nbr_repas > 0) && (philo->nbr_meals == philo->args->nbr_repas))
         philo->is_full = 1;
-    pthread_mutex_unlock(&philo->args->meal);
 
+    pthread_mutex_unlock(&philo->args->meal);
     ft_sleep((long long)philo->args->time_to_eat, philo->args);
 
-    if (philo->id % 2 == 0)
+    if ((philo->id % 2 || ((philo->id + 1) % 5 == 0 || (philo->id + 1) % 3 == 0)))
     {
         pthread_mutex_unlock(&philo->args->fork[fork_a]);
-        usleep(100);
+        usleep(50);
         pthread_mutex_unlock(&philo->args->fork[fork_b]);
     }
     else

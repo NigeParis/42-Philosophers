@@ -1,0 +1,54 @@
+==1230465== Memcheck, a memory error detector
+==1230465== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1230465== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1230465== Command: .//philo 200 410 200 200 10
+==1230465== 
+938 5 has taken a fork
+950 17 has taken a fork
+950 9 has taken a fork
+950 35 has taken a fork
+950 19 has taken a fork
+951 37 has taken a fork
+951 9 has taken a fork
+951 9 is eating
+951 39 has taken a fork
+952 3 has taken a fork
+952 41 has taken a fork
+952 39 has taken a fork
+952 39 is eating
+952 43 has taken a fork
+952 11 has taken a fork
+952 45 has taken a fork
+952 41 has taken a fork
+952 41 is eating
+952 23 has taken a fork
+952 1 has taken a fork
+952 49 has taken a fork
+952 51 has taken a fork
+952 13 has taken a fork
+952 23 has taken a fork
+952 23 is eating
+952 53 has taken a fork
+952 51 has taken a fork
+952 51 is eating
+952 27 has taken a fork
+952 7 has taken a fork
+952 55 has taken a fork
+952 57 has taken a fork
+952 29 has taken a fork
+952 27 has taken a fork
+952 27 is eating
+952 55 has taken a fork
+952 55 is eating
+952 15 has taken a fork
+952 61 has taken a fork
+3054 1 died
+==1230465== 
+==1230465== HEAP SUMMARY:
+==1230465==     in use at exit: 0 bytes in 0 blocks
+==1230465==   total heap usage: 201 allocs, 201 frees, 58,496 bytes allocated
+==1230465== 
+==1230465== All heap blocks were freed -- no leaks are possible
+==1230465== 
+==1230465== For lists of detected and suppressed errors, rerun with: -s
+==1230465== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

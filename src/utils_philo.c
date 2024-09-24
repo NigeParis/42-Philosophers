@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/20 11:28:54 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 11:04:02 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,3 @@ void	ft_putstr_fd(char *str, int fd)
 		i++;
 	}
 }
-
-void    *ft_calloc(size_t nb_elements , size_t size)
-{
-    void    *ptr;
-    size_t  total_size;
-    size_t  i;
-    char    *c;
-
-    i = 0;
-    if (nb_elements == 0)
-        return (malloc(0));
-    if (nb_elements > SIZE_MAX / size)
-        return (0);
-    total_size = nb_elements * size;
-    ptr = (void*)malloc(nb_elements * size);
-    if (!ptr)
-        return (0);
-    c = (char*)ptr;
-    while (i < total_size)
-        c[i++] = 0;
-    return (ptr);
-}
-
