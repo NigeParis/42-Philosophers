@@ -3,44 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   utils_philo.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:32:33 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 11:04:02 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/24 22:37:01 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int ft_isdigit(char c)
+int	ft_isdigit(char c)
 {
-    return (c >= '0' && c <= '9');   
+	return (c >= '0' && c <= '9');
 }
 
-int ft_isspace(char c)
+int	ft_isspace(char c)
 {
-    if (c == ' ' || c == '\t')
-        return (1);
-    return (0);
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
 }
 
-int is_negative_number(char *argv[])
+int	is_negative_number(char *argv[])
 {
-    int i;
+	int	i;
 
-    i = 1;
-    while (argv && argv[i])
-    {
-        if (is_not_number(argv[i]))
-            return (error_args("Error - numbers only\n"), EXIT_FAILURE);
-        if (ft_atoi(argv[i]) < 1)
+	i = 1;
+	while (argv && argv[i])
+	{
+		if (is_not_number(argv[i]))
+			return (error_args("Error - numbers only\n"), EXIT_FAILURE);
+		if (ft_atoi(argv[i]) < 1)
 		{
-            error_args("Error - args less than 1 or greater than INT_MAX\n");
-            return (EXIT_FAILURE);
+			error_args("Error - args less than 1 or greater than INT_MAX\n");
+			return (EXIT_FAILURE);
 		}
 		i++;
-    }
-    return (EXIT_SUCCESS);    
+	}
+	return (EXIT_SUCCESS);
 }
 
 void	ft_putstr_fd(char *str, int fd)
