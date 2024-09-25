@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup.c                                            :+:      :+:    :+:   */
+/*   philo_setup.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 21:42:50 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/25 16:13:11 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	ft_init_args(t_input_args *args)
 	if (!args)
 		return ;
 	args->nbr_forks = 0;
+	args->nbr_philo = 0;
 	args->time_to_die = 0;
 	args->time_to_eat = 0;
 	args->time_to_sleep = 0;
 	args->nbr_repas = 0;
-	args->status = 0;
 	args->stop = 0;
-	args->start_thread = 0;
-	args->sync_thread = 0;
+	args->start_time = 0;
+	args->sync_nb_threads = 0;
 	while (i < MAX_PHILO)
 	{
 		args->philo[i].id = i;
@@ -37,6 +37,7 @@ void	ft_init_args(t_input_args *args)
 		args->philo[i].nbr_meals = 0;
 		args->philo[i].is_full = 0;
 		args->philo[i].last_meal = time;
+		args->philo[i].thread = 0;
 		i++;
 	}
 }

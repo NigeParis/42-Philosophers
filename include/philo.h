@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 22:46:35 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/25 16:11:01 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 
 # define MAX_PHILO 250
 # define MIN_TIME 60
-# define RED "\033[1;31m"
-# define GREEN "\033[1;32m"
-# define RESET "\033[0m"
 
 struct						s_input_args;
 
@@ -36,7 +33,6 @@ typedef struct s_life_of_philo
 	int				id;
 	int				nbr_meals;
 	int				is_full;
-	long			start_time;
 	long long		last_meal;
 	pthread_t		thread;
 	t_input_args	*args;
@@ -44,17 +40,15 @@ typedef struct s_life_of_philo
 
 typedef struct s_input_args
 {
-	int				id;
 	int				nbr_philo;
 	int				nbr_forks;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nbr_repas;
-	int				status;
 	int				stop;
-	long long		start_thread;
-	long long		sync_thread;
+	int				sync_nb_threads;
+	long long		start_time;
 	long long		stop_thread;
 	pthread_mutex_t	death;
 	pthread_mutex_t	lock;
@@ -86,8 +80,6 @@ void			*monitor(void *args);
 void			*thread(void *thread_philo);
 int				end_all(t_input_args *args);
 int				set_end_all(t_input_args *args);
-long long int	eat_time_left(t_input_args *args, int i);
-long long int	life_time_left(t_input_args *args, int i);
 int				philo_eating(t_current_philo *philo);
 int				philo_sleeping(t_current_philo *philo);
 int				philo_thinking(t_current_philo *philo);
@@ -97,7 +89,11 @@ void			put_are_full_log(t_current_philo *philo, char *str);
 void			put_death_log(t_current_philo *philo, char *str);
 int				philo_all_full(t_current_philo *philo);
 int				all_full(t_input_args *args);
-void			DEBUG_print_input(t_input_args *args, \
+void			get_forks(t_current_philo *philo, int *fork_a, int *fork_b);
+void			drop_forks(t_current_philo *philo, int *fork_a, int *fork_b);
+void			debug_print_input(t_input_args *args, \
 				t_current_philo *philo, int i);
+
+
 
 #endif

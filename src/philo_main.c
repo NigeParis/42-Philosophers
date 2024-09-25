@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/24 22:25:14 by nige42           ###   ########.fr       */
+/*   Updated: 2024/09/25 15:55:17 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-long long int	eat_time_left(t_input_args *args, int i)
-{
-	long long int	result;
-
-	result = 0;
-	if (i < 0 || !args)
-		return (0);
-	result = (((args->philo[i].last_meal + args->time_to_die) \
-	- args->philo[i].last_meal) - args->time_to_eat);
-	return (result);
-}
-
-long long int	life_time_left(t_input_args *args, int i)
-{
-	long long int	result;
-
-	result = 0;
-	if (i < 0 || !args)
-		return (0);
-	result = (eat_time_left(args, i) - args->time_to_sleep);
-	return (result);
-}
 
 void	*monitor(void *table)
 {
@@ -50,6 +27,24 @@ void	*monitor(void *table)
 	return (NULL);
 }
 
+void	one_philo(t_input_args *args)
+{
+	long long int	stamp;
+	int				id;
+
+	stamp = 0;
+	id = 1;
+	pthread_mutex_lock(&args->log);
+	pthread_mutex_lock(&args->death);
+	stamp = (get_timestamp() - args->start_time);
+	printf("%llu %d %s\n", stamp, id, "has taken a fork");
+	ft_sleep(args->time_to_die, args);
+	stamp = (get_timestamp() - args->start_time);
+	printf("%llu %d %s\n", stamp, id, "died");
+	pthread_mutex_unlock(&args->death);
+	pthread_mutex_unlock(&args->log);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_input_args	args;
@@ -57,11 +52,15 @@ int	main(int argc, char *argv[])
 	if (is_number_of_args(argc))
 		return (EXIT_FAILURE);
 	ft_init_args(&args);
+	args.start_time = get_timestamp();
 	if (parse_args(&args, argc, argv))
 		return (EXIT_FAILURE);
 	if (args.nbr_philo == 1)
-		return (0);
-	args.start_thread = get_timestamp();
+	{
+		if (init_mutex(&args))
+			return (EXIT_FAILURE);
+		return (one_philo(&args), EXIT_SUCCESS);
+	}
 	if (init_mutex(&args))
 		return (EXIT_FAILURE);
 	if (make_threads(&args))
