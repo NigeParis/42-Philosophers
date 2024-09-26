@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/25 16:13:11 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:09:06 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,30 @@ int	init_mutex(t_input_args *args)
 	while (i < args->nbr_philo)
 	{
 		if (pthread_mutex_init(&args->fork[i], NULL))
+			return (EXIT_FAILURE);
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+
+
+int	destroy_mutex(t_input_args *args)
+{
+	int	i;
+
+	i = 0;
+	if (pthread_mutex_destroy(&args->log))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&args->lock))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&args->death))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&args->meal))
+		return (EXIT_FAILURE);
+	while (i < args->nbr_philo)
+	{
+		if (pthread_mutex_destroy(&args->fork[i]))
 			return (EXIT_FAILURE);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/25 15:55:17 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/26 14:45:08 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	*monitor(void *table)
 		if (args->stop == 2)
 			put_are_full_log(args->philo, "are full");
 		philo_is_dead(args);
+		if (args->nbr_philo > 99)
+			usleep(500);
+
 	}
 	return (NULL);
 }
@@ -64,6 +67,8 @@ int	main(int argc, char *argv[])
 	if (init_mutex(&args))
 		return (EXIT_FAILURE);
 	if (make_threads(&args))
+		return (EXIT_FAILURE);
+	if (destroy_mutex(&args))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

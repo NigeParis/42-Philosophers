@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/25 16:11:01 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:09:36 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void			get_forks(t_current_philo *philo, int *fork_a, int *fork_b);
 void			drop_forks(t_current_philo *philo, int *fork_a, int *fork_b);
 void			debug_print_input(t_input_args *args, \
 				t_current_philo *philo, int i);
+int				destroy_mutex(t_input_args *args);
 
 
 
