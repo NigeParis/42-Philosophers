@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 10:37:44 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:02:14 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define MAX_PHILO 200
 # define MIN_TIME 60
 # define CALIBRATE 100
-# define MAX_WAIT 10000
+# define MAX_WAIT 1000
 # define FAT_CALIBRATE 1
 # define FAT_MAX_WAIT 5000
 

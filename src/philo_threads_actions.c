@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:18:55 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 10:36:58 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:54:37 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@ void	get_forks(t_current_philo *philo, int *left_fork, int *right_fork)
 	if (*left_fork % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->args->fork[*left_fork]);
-		put_log(philo, "has taken a left  fork");
-		usleep(10);
+		put_log(philo, "has taken a fork");
+		usleep(60);
 		pthread_mutex_lock(&philo->args->fork[*right_fork]);
-		put_log(philo, "has taken a right fork");
+		put_log(philo, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->args->fork[*right_fork]);
-		put_log(philo, "has taken a right fork");
-		usleep(10);
+		put_log(philo, "has taken a fork");
+		usleep(55);
 		pthread_mutex_lock(&philo->args->fork[*left_fork]);
-		put_log(philo, "has taken a left  fork");
+		put_log(philo, "has taken a fork");
 	}	
 }
 
 void	drop_forks(t_current_philo *philo, int *left_fork, int *right_fork)
 {
 	pthread_mutex_unlock(&philo->args->fork[*left_fork]);
-	usleep(10);
+	usleep(60);
 	pthread_mutex_unlock(&philo->args->fork[*right_fork]);
 }
 
