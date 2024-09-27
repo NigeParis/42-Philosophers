@@ -6,11 +6,40 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 09:00:08 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:10:50 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	slow_down(t_input_args *args)
+{
+	int	wait;
+
+	wait = 0;
+	pthread_mutex_lock(&args->meal);
+	if (args->nbr_philo > CALIBRATE)
+		wait = ((args->nbr_philo - CALIBRATE) \
+		/ (MAX_PHILO - CALIBRATE)) * MAX_WAIT;
+	pthread_mutex_unlock(&args->meal);
+	usleep(wait);
+}
+
+void	slow_and_fat(t_input_args *args)
+{
+	int	wait;
+
+	wait = 0;
+	pthread_mutex_lock(&args->meal);
+	if (args->philo->is_full)
+	{
+		if (args->nbr_philo > CALIBRATE)
+			wait = ((args->nbr_philo - FAT_CALIBRATE) \
+			/ (MAX_PHILO - CALIBRATE)) * FAT_MAX_WAIT;
+	}
+	pthread_mutex_unlock(&args->meal);
+	usleep(wait);
+}
 
 void	*monitor(void *table)
 {
@@ -23,8 +52,7 @@ void	*monitor(void *table)
 		if (args->stop == 2)
 			put_are_full_log(args->philo, "are full");
 		philo_is_dead(args);
-		if (args->nbr_philo > 99)
-			usleep(500);
+		slow_down(args);
 	}
 	return (NULL);
 }

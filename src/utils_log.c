@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 11:26:44 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/25 15:56:35 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:10:21 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	put_are_full_log(t_current_philo *philo, char *str)
 	long long int	stamp;
 
 	pthread_mutex_lock(&philo->args->log);
-	stamp = (get_timestamp() - philo->args->start_time);
+	stamp = (get_timestamp() - philo->args->start_time) \
+	+ (philo->args->time_to_eat);
 	printf("%llu all philos %s\n", stamp, str);
 	usleep(10);
 	pthread_mutex_unlock(&philo->args->log);

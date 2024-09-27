@@ -12,7 +12,7 @@ SRC_DIR=src/
 OBJ_DIR=build/
 
 SRC= philo_main.c utils_atoi.c utils_parse.c utils_philo.c philo_kill.c
-SRC+= philo_setup.c philo_error.c philo_debug.c utils_time.c philo_threads.c 
+SRC+= philo_setup.c philo_error.c utils_time.c philo_threads.c 
 SRC+= utils_log.c philo_threads_actions.c
  
 SRCS=$(addprefix $(SRC_DIR), $(SRC))
