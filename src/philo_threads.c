@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/26 13:57:57 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 08:47:44 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	make_threads(t_input_args *args)
 		if (pthread_create(&args->philo[i].thread, \
 		NULL, &thread, &args->philo[i]))
 			return (EXIT_FAILURE);
-
 		pthread_mutex_lock(&args->lock);
 		args->sync_nb_threads++;
 		pthread_mutex_unlock(&args->lock);

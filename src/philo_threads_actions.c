@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:18:55 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/26 14:45:01 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 08:48:53 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	get_forks(t_current_philo *philo, int *left_fork, int *right_fork)
 {
-	// if ((*left_fork % 2 || ((*left_fork + 1) % 5 == 0 || \
-	// (*left_fork + 1) % 3 == 0) || (*left_fork + 1) % 7 == 0))
 	if (*left_fork % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->args->fork[*left_fork]);
@@ -36,9 +34,9 @@ void	get_forks(t_current_philo *philo, int *left_fork, int *right_fork)
 
 void	drop_forks(t_current_philo *philo, int *left_fork, int *right_fork)
 {
-		pthread_mutex_unlock(&philo->args->fork[*left_fork]);
-		usleep(60);
-		pthread_mutex_unlock(&philo->args->fork[*right_fork]);
+	pthread_mutex_unlock(&philo->args->fork[*left_fork]);
+	usleep(60);
+	pthread_mutex_unlock(&philo->args->fork[*right_fork]);
 }
 
 int	philo_eating(t_current_philo *philo)
@@ -60,7 +58,6 @@ int	philo_eating(t_current_philo *philo)
 	if ((philo->args->nbr_repas > 0) && \
 	(philo->nbr_meals >= philo->args->nbr_repas))
 		philo->is_full = 1;
-	
 	pthread_mutex_unlock(&philo->args->meal);
 	ft_sleep((long long)philo->args->time_to_eat, philo->args);
 	drop_forks(philo, &left_fork, &right_fork);
@@ -69,7 +66,6 @@ int	philo_eating(t_current_philo *philo)
 
 int	philo_sleeping(t_current_philo *philo)
 {
-	
 	put_log(philo, "is sleeping");
 	ft_sleep((long long)philo->args->time_to_sleep, philo->args);
 	return (EXIT_SUCCESS);
@@ -78,7 +74,5 @@ int	philo_sleeping(t_current_philo *philo)
 int	philo_thinking(t_current_philo *philo)
 {
 	put_log(philo, "is thinking");
-	// if ((philo->args->nbr_philo % 2) == 0)
-	// 	usleep(1);
 	return (EXIT_SUCCESS);
 }

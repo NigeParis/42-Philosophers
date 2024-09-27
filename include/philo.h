@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/26 13:09:36 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 08:59:07 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/time.h>
 # include <stdint.h>
 
-# define MAX_PHILO 250
+# define MAX_PHILO 200
 # define MIN_TIME 60
 
 struct						s_input_args;
@@ -94,7 +94,7 @@ void			drop_forks(t_current_philo *philo, int *fork_a, int *fork_b);
 void			debug_print_input(t_input_args *args, \
 				t_current_philo *philo, int i);
 int				destroy_mutex(t_input_args *args);
-
+void			ft_init_philos_structure(t_input_args *args, long long *time);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 10:48:56 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/26 13:06:26 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 08:47:20 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 long long	get_timestamp(void)
 {
-	struct timeval	current_time;
+	struct timeval	time_now;
 	long long		time_stamp;
 
-	gettimeofday(&current_time, NULL);
-	time_stamp = ((current_time.tv_sec * 1000LL) + (current_time.tv_usec / 1000));
+	gettimeofday(&time_now, NULL);
+	time_stamp = ((time_now.tv_sec * 1000LL) + (time_now.tv_usec / 1000));
 	return (time_stamp);
 }
 

@@ -6,11 +6,30 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/26 13:09:06 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 08:59:56 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_init_philos_structure(t_input_args *args, long long *time)
+{
+	int	i;
+
+	i = 0;
+	if (!args || !time)
+		return ;
+	while (i < MAX_PHILO)
+	{
+		args->philo[i].id = i;
+		args->philo[i].args = args;
+		args->philo[i].nbr_meals = 0;
+		args->philo[i].is_full = 0;
+		args->philo[i].last_meal = *time;
+		args->philo[i].thread = 0;
+		i++;
+	}
+}
 
 void	ft_init_args(t_input_args *args)
 {
@@ -30,16 +49,7 @@ void	ft_init_args(t_input_args *args)
 	args->stop = 0;
 	args->start_time = 0;
 	args->sync_nb_threads = 0;
-	while (i < MAX_PHILO)
-	{
-		args->philo[i].id = i;
-		args->philo[i].args = args;
-		args->philo[i].nbr_meals = 0;
-		args->philo[i].is_full = 0;
-		args->philo[i].last_meal = time;
-		args->philo[i].thread = 0;
-		i++;
-	}
+	ft_init_philos_structure(args, &time);
 }
 
 int	parse_args(t_input_args *args, int argc, char *argv[])
@@ -90,8 +100,6 @@ int	init_mutex(t_input_args *args)
 	}
 	return (EXIT_SUCCESS);
 }
-
-
 
 int	destroy_mutex(t_input_args *args)
 {

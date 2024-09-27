@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/26 14:45:08 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 09:00:08 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	*monitor(void *table)
 		philo_is_dead(args);
 		if (args->nbr_philo > 99)
 			usleep(500);
-
 	}
 	return (NULL);
 }
