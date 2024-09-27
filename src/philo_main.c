@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:17:17 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 11:10:50 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:48:26 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ void	slow_down(t_input_args *args)
 {
 	int	wait;
 
-	wait = 0;
 	pthread_mutex_lock(&args->meal);
-	if (args->nbr_philo > CALIBRATE)
-		wait = ((args->nbr_philo - CALIBRATE) \
-		/ (MAX_PHILO - CALIBRATE)) * MAX_WAIT;
+	wait = ((args->nbr_philo - CALIBRATE) \
+	/ (MAX_PHILO - CALIBRATE)) * MAX_WAIT;
+	if (args->nbr_philo < CALIBRATE)
+	{
+		wait = 0;
+	}
 	pthread_mutex_unlock(&args->meal);
 	usleep(wait);
 }
@@ -31,11 +33,13 @@ void	slow_and_fat(t_input_args *args)
 
 	wait = 0;
 	pthread_mutex_lock(&args->meal);
-	if (args->philo->is_full)
+	if (args->nbr_philo > FAT_CALIBRATE)
+		wait = ((args->nbr_philo - FAT_CALIBRATE) \
+		/ (MAX_PHILO - CALIBRATE)) * FAT_MAX_WAIT;
+
+	if (!args->philo->is_full)
 	{
-		if (args->nbr_philo > CALIBRATE)
-			wait = ((args->nbr_philo - FAT_CALIBRATE) \
-			/ (MAX_PHILO - CALIBRATE)) * FAT_MAX_WAIT;
+		wait = 1;	
 	}
 	pthread_mutex_unlock(&args->meal);
 	usleep(wait);
@@ -68,7 +72,7 @@ void	one_philo(t_input_args *args)
 	pthread_mutex_lock(&args->death);
 	stamp = (get_timestamp() - args->start_time);
 	printf("%llu %d %s\n", stamp, id, "has taken a fork");
-	ft_sleep(args->time_to_die, args);
+	ft_sleep(args->time_to_die);
 	stamp = (get_timestamp() - args->start_time);
 	printf("%llu %d %s\n", stamp, id, "died");
 	pthread_mutex_unlock(&args->death);

@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:19:39 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 13:02:14 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:48:03 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 
 # define MAX_PHILO 200
 # define MIN_TIME 60
-# define CALIBRATE 100
+# define CALIBRATE 70
 # define MAX_WAIT 1000
-# define FAT_CALIBRATE 1
+# define FAT_CALIBRATE 70
 # define FAT_MAX_WAIT 5000
 
 struct						s_input_args;
@@ -87,7 +87,7 @@ int				set_end_all(t_input_args *args);
 int				philo_eating(t_current_philo *philo);
 int				philo_sleeping(t_current_philo *philo);
 int				philo_thinking(t_current_philo *philo);
-void			ft_sleep(long long wait, t_input_args *args);
+void			ft_sleep(long long wait);
 int				philo_is_dead(t_input_args *args);
 void			put_are_full_log(t_current_philo *philo, char *str);
 void			put_death_log(t_current_philo *philo, char *str);

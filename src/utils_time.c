@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 10:48:56 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 08:47:20 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:17:00 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,18 @@ long long	get_timestamp(void)
 	return (time_stamp);
 }
 
-void	ft_sleep(long long wait, t_input_args *args)
+void	ft_sleep(long long wait)
 {
 	long long	sleep_time;
+	long long	time;
+	long long	add;
 
-	(void)args;
-	sleep_time = get_timestamp() + wait;
-	while (get_timestamp() < sleep_time)
-		usleep(2);
+	time = get_timestamp();
+	sleep_time = (time + wait);
+	add = 10;
+	while (time <= sleep_time)
+	{
+			usleep(add);
+			time = time + add;
+	}
 }

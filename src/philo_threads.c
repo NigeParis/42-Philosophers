@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 08:42:34 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 08:47:44 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:48:43 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	*thread(void *thread_philo)
 		return (NULL);
 	philo = (t_current_philo *)thread_philo;
 	args = philo->args;
-	if ((philo->id) % 2 == 0)
-		ft_sleep(2, args);
+	if (((philo->id) % 2 == 0) || philo->id == 5)
+		ft_sleep(2);
 	while (!end_all(args))
 	{
 		philo_eating(philo);
