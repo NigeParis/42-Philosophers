@@ -2,7 +2,7 @@
 ## ARGUMENTS
 
 NAME= philo
-CFLAGS= -Wall -Wextra -Werror -g3
+CFLAGS= -Wall -Wextra -Werror
 CC=cc
 
 ###############################################################################
