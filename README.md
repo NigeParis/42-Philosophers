@@ -1,4 +1,4 @@
-**Philosophers Problem t**
+**Philosophers Problem**
 
 Imagine five philosophers at a table, each with a plate of spaghetti and a fork between each plate. They need two forks to eat, but they can only alternate between thinking, eating, and catching some Z's. A philosopher can chow down only when they have both the left and right fork, which happens when their neighbors are either deep in thought or snoozing. After a satisfying meal, they put down both forks and decide to take a nap and after to ponder life's mysteries. 
 
