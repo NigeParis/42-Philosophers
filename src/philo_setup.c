@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_setup.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nige42 <nige42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:37:27 by nrobinso          #+#    #+#             */
-/*   Updated: 2024/09/27 08:59:56 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:13:55 by nige42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ void	ft_init_philos_structure(t_input_args *args, long long *time)
 
 void	ft_init_args(t_input_args *args)
 {
-	int			i;
 	long long	time;
 
-	i = 0;
 	time = get_timestamp();
 	if (!args)
 		return ;
