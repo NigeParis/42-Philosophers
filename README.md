@@ -10,4 +10,6 @@ The challenge? Create a plan (a concurrent algorithm) that ensures no philosophe
 
 ./philo 5 60 100 100 5 sure a philo will die  </br>
 <img width="264" alt="Capture d’écran 2024-09-29 à 18 14 46" src="https://github.com/user-attachments/assets/33b6685d-69ac-4a62-99bd-447fc8ed53fb"> </br>
+here no ... all chow down and are full </br>
+
 <img width="264" alt="Capture d’écran 2024-09-29 à 18 16 11" src="https://github.com/user-attachments/assets/46b0505e-2779-46fb-a2ef-d6295b0fd1ac">
